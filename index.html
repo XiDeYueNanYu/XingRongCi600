@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <body style="background-color: #f7fbf3;">
+    <title>越南语听力练习</title>
+    <style>
+    body { 
+        font-family: Arial, sans-serif; 
+        text-align: center; 
+        margin: 0;
+        padding: 10px;
+    }
+    #gameContainer {
+        display: block; /* Hiển thị ngay từ đầu */
+    }
+    #infoBox { 
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        min-height: 60px;
+        margin: 1px auto; 
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: clamp(20px, 6vw, 60px);
+        font-weight: bold;
+        padding: 10px;
+    }
+    #contactBox, #socialBox { 
+		width: 90%;
+		max-width: 750px;
+		height: auto;
+		min-height: 20px;
+		margin: 1px auto;
+		border: 1px solid #ccc; 
+		background: #68838B; 
+		color: #D2B48C; 
+		display: flex; 
+		flex-direction: column; /* Xếp dọc để <br> xuống dòng */
+		justify-content: flex-start; /* Bắt đầu từ trên */
+		align-items: flex-start; /* Căn trái toàn bộ khối */
+		padding: 3px;
+		font-size: clamp(14px, 3vw, 14px);
+		font-weight: bold;
+		text-align: left; /* Ép từng dòng văn bản căn trái */
+	}
+    #shortcutBox { 
+        width: 90%;
+        max-width: 750px;
+        height: auto;
+        min-height: 30px;
+        margin: 1px auto;
+        border: 1px solid #ccc; 
+        background: #68838B; 
+        color: #D2B48C; 
+        display: flex; 
+        align-items: center; 
+        justify-content: left; 
+        padding-left: 10px;
+        font-size: clamp(10px, 2.5vw, 13px);
+        font-weight: bold;
+    }
+    #controls { 
+        margin: 15px 0; 
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+    button { 
+        padding: 8px 16px;
+        margin: 5px; 
+        cursor: pointer; 
+        border: 3px solid #89ACB7; 
+        background: #68838B; 
+        color: #E6E6FA; 
+        font-size: clamp(14px, 3.5vw, 20px);
+        border-radius: 5px; 
+        font-weight: bold;
+    }
+    #sentenceNumber { 
+        width: 60px; 
+        padding: 8px; 
+        text-align: center; 
+        border: 3px solid #68838B; 
+        background: #FFAD5B; 
+        color: #000; 
+        border-radius: 10px; 
+        font-size: clamp(14px, 4vw, 20px);
+        -moz-appearance: textfield; 
+    }
+    #sentenceNumber::-webkit-inner-spin-button, 
+    #sentenceNumber::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    #sentenceNumber:disabled { 
+        background: #eee; 
+    }
+    .disabled { 
+        cursor: not-allowed; 
+        pointer-events: none; 
+    }
+    .active-mode { 
+        border: 4px solid orange; 
+    }
+    #indicator { 
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        min-height: 60px;
+        margin: 10px auto; 
+        border: 3px solid #734A2E; 
+        background: #ffffff; 
+        border-radius: 20px; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+    }
+    #answerInput { 
+    width: 90%;
+    max-width: 700px;
+    padding: 15px; 
+    margin: 10px 0; 
+    border: 3px solid #734A2E; 
+    background: #E6EDD9; 
+    color: #000; 
+    font-size: clamp(16px, 4vw, 30px);
+    outline: none; /* Loại bỏ viền đen mặc định khi focus */
+	}
+
+	#answerInput:focus {
+		border: 3px solid #734A2E; /* Giữ nguyên màu viền khi focus */
+		outline: none; /* Đảm bảo không có viền mặc định nào xuất hiện */
+	}
+    #score { 
+        display: none; 
+        margin-left: 10px; 
+        color: #FF6820;
+        font-size: clamp(16px, 4vw, 30px);
+    }
+    #wrongSentences { 
+        display: none; 
+        width: 90%;
+        max-width: 700px;
+        margin: 10px auto; 
+        padding: 10px; 
+        border: 2px solid #CE6D5E; 
+        background: #FFF0F0; 
+        color: #CE6D5E; 
+        font-size: clamp(14px, 3.5vw, 20px);
+        text-align: left; 
+        border-radius: 5px; 
+    }
+    @media (max-width: 600px) {
+        #infoBox {
+            font-size: clamp(18px, 5vw, 40px);
+        }
+        #contactBox, #shortcutBox, #socialBox {
+            font-size: clamp(12px, 2.5vw, 16px);
+        }
+        button {
+            padding: 6px 12px;
+        }
+        #sentenceNumber {
+            width: 35px;
+        }
+        #indicator {
+            border-width: 3px;
+            border-radius: 15px;
+        }
+        #answerInput {
+            padding: 10px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="infoBox">习得越南语 - 形容词-600</div>
+        <div id="socialBox">关注我们 - 天天练习: <br>YouTube: <br>TikTok: <br>Facebook: <br></div>
+		<div id="contactBox">阮玉煌 | Weixin：XiDeYueNanYu</div>
+        <div id="shortcutBox">快键: Ctrl+F (再听一遍) | Ctrl+8 (上一题) | Ctrl+9 (下一题)</div>
+        <div id="controls">
+            <button id="autoContinueBtn">自动继续</button>
+            <button id="showHideBtn">显示-隐藏</button>
+            <button id="prevBtn">◀</button>
+            <input type="text" id="sentenceNumber" inputmode="numeric" pattern="[0-9]*">
+            <button id="nextBtn">▶</button>
+            <button id="replayBtn">再听一遍</button>
+            <button id="freeModeBtn" class="active-mode">自由模式</button>
+            <button id="testModeBtn">作业模式</button>
+            <span id="score">0/0</span>
+        </div>
+        <div id="indicator"></div>
+        <input type="text" id="answerInput" placeholder="输入所听到的内容">
+        <div id="wrongSentences"></div>
+    </div>
+    <audio id="mainAudio" src="1-100.mp3"></audio>
+    <audio id="correctAudio" src="Dung.mp3"></audio>
+    <audio id="wrongAudio" src="Sai.mp3"></audio>
+
+    <script>
+    const audio = document.getElementById('mainAudio');
+const correctAudio = document.getElementById('correctAudio');
+const wrongAudio = document.getElementById('wrongAudio');
+const answerInput = document.getElementById('answerInput');
+const indicator = document.getElementById('indicator');
+const sentenceNumber = document.getElementById('sentenceNumber');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const replayBtn = document.getElementById('replayBtn');
+const freeModeBtn = document.getElementById('freeModeBtn');
+const testModeBtn = document.getElementById('testModeBtn');
+const autoContinueBtn = document.getElementById('autoContinueBtn');
+const showHideBtn = document.getElementById('showHideBtn');
+const scoreDisplay = document.getElementById('score');
+const wrongSentencesDisplay = document.getElementById('wrongSentences');
+
+const buttons = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, autoContinueBtn, showHideBtn];
+
+    const sentences = [
+    { start: 0, end: 2.064104, text: "Bài tập này rất dễ dàng với cô ấy.", text2: "这道题对她来说很容易。", text3: "Dễ dàng  - 容易", audioFile: "1-100.mp3" },
+{ start: 2.516259, end: 5.79254, text: "Vấn đề này khá phức tạp và cần thời gian để giải quyết.", text2: "这个问题很复杂，需要时间来解决。", text3: "Phức tạp  - 复杂", audioFile: "1-100.mp3" },
+{ start: 6.274762, end: 8.859478, text: "Anh ấy chạy rất nhanh và đã về đích đầu tiên.", text2: "他跑得很快，第一个到达终点。", text3: "Nhanh  - 快", audioFile: "1-100.mp3" },
+{ start: 9.311633, end: 11.645782, text: "Cô ấy di chuyển khá chậm do bị đau chân.", text2: "因为腿疼，她走得很慢。", text3: "Chậm  - 慢", audioFile: "1-100.mp3" },
+{ start: 12.097937, end: 14.752812, text: "Chiếc bàn này quá to để đặt trong phòng nhỏ.", text2: "这张桌子对这个小房间来说太大了。", text3: "To  - 大", audioFile: "1-100.mp3" },
+{ start: 15.235034, end: 17.438889, text: "Con mèo này rất nhỏ và dễ thương.", text2: "这只猫很小，非常可爱。", text3: "Nhỏ  - 小", audioFile: "1-100.mp3" },
+{ start: 17.891043, end: 20.345465, text: "Tòa nhà này rất cao và có tầm nhìn đẹp.", text2: "这栋楼很高，视野很好。", text3: "Cao  - 高", audioFile: "1-100.mp3" },
+{ start: 20.797619, end: 23.282109, text: "Anh ấy ngồi ở một chiếc ghế thấp trong phòng họp.", text2: "他坐在会议室的低椅子上。", text3: "Thấp  - 低", audioFile: "1-100.mp3" },
+{ start: 23.72424, end: 25.747687, text: "Con đường này rất dài và thẳng tắp.", text2: "这条路很长，很直。", text3: "Dài  - 长", audioFile: "1-100.mp3" },
+{ start: 26.229909, end: 28.34356, text: "Cuốn sách này khá ngắn và dễ đọc.", text2: "这本书很短，很容易读。", text3: "Ngắn  - 短", audioFile: "1-100.mp3" },
+{ start: 28.785692, end: 31.791361, text: "Anh ấy có sức mạnh rất lớn và có thể nâng vật nặng.", text2: "他力气很大，能举起重物。", text3: "Mạnh  - 强", audioFile: "1-100.mp3" },
+{ start: 32.303651, end: 34.948503, text: "Sau trận ốm, cô ấy cảm thấy rất yếu.", text2: "病后她感觉很虚弱。", text3: "Yếu  - 弱", audioFile: "1-100.mp3" },
+{ start: 35.440748, end: 37.845057, text: "Phòng này rất sáng nhờ có nhiều cửa sổ.", text2: "这个房间因为有很多窗户所以很明亮。", text3: "Sáng  - 明亮", audioFile: "1-100.mp3" },
+{ start: 38.297211, end: 40.811769, text: "Căn phòng này khá tối do không có đèn.", text2: "这个房间没有灯，所以很暗。", text3: "Tối  - 暗", audioFile: "1-100.mp3" },
+{ start: 41.283968, end: 43.527914, text: "Mùa hè ở đây rất nóng và oi bức.", text2: "这里的夏天非常炎热。", text3: "Nóng  - 热", audioFile: "1-100.mp3" },
+{ start: 44.010136, end: 46.725147, text: "Trời hôm nay rất lạnh và cần mặc áo ấm.", text2: "今天很冷，需要穿暖和的衣服。", text3: "Lạnh  - 冷", audioFile: "1-100.mp3" },
+{ start: 47.197347, end: 50.152902, text: "Buổi sáng ở vùng núi rất mát mẻ và dễ chịu.", text2: "山区的早晨非常凉爽、舒适。", text3: "Mát  - 凉爽", audioFile: "1-100.mp3" },
+{ start: 50.625102, end: 52.939206, text: "Ngôi nhà này rất ấm áp vào mùa đông.", text2: "这所房子在冬天非常温暖。", text3: "Ấm  - 暖", audioFile: "1-100.mp3" },
+{ start: 53.391361, end: 55.414807, text: "Cảnh hoàng hôn trên biển rất đẹp.", text2: "海上的日落非常美丽。", text3: "Đẹp  - 美", audioFile: "1-100.mp3" },
+{ start: 55.876984, end: 58.602018, text: "Bức tranh này trông rất xấu và không hài hòa.", text2: "这幅画看起来很丑，不和谐。", text3: "Xấu  - 丑", audioFile: "1-100.mp3" },
+{ start: 59.064195, end: 61.388322, text: "Ông ấy là người rất giàu có và quyền lực.", text2: "他是一个非常富有且有权势的人。", text3: "Giàu  - 富有", audioFile: "1-100.mp3" },
+{ start: 61.850499, end: 64.856168, text: "Gia đình cô ấy rất nghèo và sống trong căn nhà cũ.", text2: "她的家庭非常贫穷，住在一间旧房子里。", text3: "Nghèo  - 贫穷", audioFile: "1-100.mp3" },
+{ start: 65.368458, end: 67.862971, text: "Cô ấy rất vui khi nhận được tin tốt lành.", text2: "她收到好消息时非常高兴。", text3: "Vui  - 高兴", audioFile: "1-100.mp3" },
+{ start: 68.345193, end: 70.859751, text: "Anh ấy rất buồn khi mất đi người bạn thân.", text2: "失去好朋友让他非常伤心。", text3: "Buồn  - 伤心", audioFile: "1-100.mp3" },
+{ start: 71.301882, end: 73.96678, text: "Cô bé này rất thông minh và luôn đứng đầu lớp.", text2: "这个女孩非常聪明，总是名列前茅。", text3: "Thông minh  - 聪明", audioFile: "1-100.mp3" },
+{ start: 74.43898, end: 77.344422, text: "Hành động của anh ấy thật ngu ngốc và thiếu suy nghĩ.", text2: "他的行为很愚蠢，缺乏考虑。", text3: "Ngu ngốc  - 愚蠢", audioFile: "1-100.mp3" },
+{ start: 77.816621, end: 80.321156, text: "Cậu bé này rất lười và không chịu làm bài tập.", text2: "这个男孩很懒，不愿意做作业。", text3: "Lười  - 懒", audioFile: "1-100.mp3" },
+{ start: 80.773311, end: 84.099705, text: "Cô ấy rất chăm chỉ và luôn hoàn thành công việc đúng hạn.", text2: "她非常勤奋，总是按时完成工作。", text3: "Chăm chỉ  - 勤奋", audioFile: "1-100.mp3" },
+{ start: 84.531814, end: 87.577574, text: "Ông ấy là người rất khỏe mạnh và thường xuyên tập thể dục.", text2: "他非常健康，常常锻炼身体。", text3: "Khỏe mạnh  - 健康", audioFile: "1-100.mp3" },
+{ start: 88.039751, end: 91.64678, text: "Bà ấy đã trở nên ốm yếu sau nhiều năm làm việc vất vả.", text2: "她经过多年辛苦工作后变得虚弱。", text3: "Ốm yếu  - 虚弱", audioFile: "1-100.mp3" },
+{ start: 92.11898, end: 94.854036, text: "Cô ấy đã chuẩn bị đầy đủ mọi thứ cho chuyến đi.", text2: "她为旅行准备了所有必需品。", text3: "Đầy đủ  - 充足", audioFile: "1-100.mp3" },
+{ start: 95.316213, end: 98.031224, text: "Nơi đây gặp nhiều khó khăn do thiếu thốn nước sạch.", text2: "这个地方因为缺乏干净的水而面临很多困难。", text3: "Thiếu thốn  - 缺乏", audioFile: "1-100.mp3" },
+{ start: 98.503424, end: 101.098163, text: "Câu chuyện mà cô ấy kể rất thật và xúc động.", text2: "她讲的故事非常真实，令人感动。", text3: "Thật  - 真实", audioFile: "1-100.mp3" },
+{ start: 101.550317, end: 104.34551, text: "Họ đã phát hiện ra rằng bức tranh này là giả.", text2: "他们发现这幅画是假的。", text3: "Giả  - 假", audioFile: "1-100.mp3" },
+{ start: 104.807687, end: 107.232041, text: "Chiếc ghế này rất cứng và không thoải mái.", text2: "这张椅子很硬，不舒服。", text3: "Cứng  - 硬", audioFile: "1-100.mp3" },
+{ start: 107.674172, end: 110.288957, text: "Cái đệm này rất mềm và dễ chịu khi nằm.", text2: "这个垫子很软，躺着很舒服。", text3: "Mềm  - 软", audioFile: "1-100.mp3" },
+{ start: 110.791224, end: 113.055215, text: "Cô ấy vừa mua một chiếc điện thoại mới.", text2: "她刚买了一部新手机。", text3: "Mới  - 新", audioFile: "1-100.mp3" },
+{ start: 113.527415, end: 116.462925, text: "Chiếc xe này đã rất cũ và cần được thay thế.", text2: "这辆车已经很旧，需要更换。", text3: "Cũ  - 旧", audioFile: "1-100.mp3" },
+{ start: 116.925102, end: 119.299342, text: "Cô ấy rất thật thà và luôn nói sự thật.", text2: "她非常诚实，总是说实话。", text3: "Thật thà  - 诚实", audioFile: "1-100.mp3" },
+{ start: 119.761519, end: 121.444195, text: "Hắn ta là con người gian sảo.", text2: "他是个奸诈的家伙。", text3: "Gian sảo  - 奸诈", audioFile: "1-100.mp3" },
+{ start: 121.916395, end: 124.050091, text: "Con đường này rất rộng và dễ đi lại.", text2: "这条路很宽，便于行驶。", text3: "Rộng  - 宽", audioFile: "1-100.mp3" },
+{ start: 124.472177, end: 127.507914, text: "Căn phòng này khá hẹp và không đủ chỗ để đặt nhiều đồ.", text2: "这个房间很窄，无法放很多东西。", text3: "Hẹp  - 窄", audioFile: "1-100.mp3" },
+{ start: 128.000159, end: 130.985782, text: "Hồ này rất sâu và nguy hiểm nếu không biết bơi.", text2: "这个湖很深，不会游泳的话很危险。", text3: "Sâu  - 深", audioFile: "1-100.mp3" },
+{ start: 131.427914, end: 134.493719, text: "Con sông này rất nông, có thể lội qua dễ dàng.", text2: "这条河很浅，容易涉水而过。", text3: "Nông  - 浅", audioFile: "1-100.mp3" },
+{ start: 134.975941, end: 138.172041, text: "Chiếc vali này quá nặng để cô ấy có thể tự mang.", text2: "这个行李箱太重了，她无法自己拿。", text3: "Nặng  - 重", audioFile: "1-100.mp3" },
+{ start: 138.64424, end: 141.519615, text: "Cô ấy thích mang theo một túi nhẹ khi đi du lịch.", text2: "她喜欢旅行时带一个轻便的包。", text3: "Nhẹ  - 轻", audioFile: "1-100.mp3" },
+{ start: 141.991814, end: 144.596576, text: "Con mèo của cô ấy rất béo và lười biếng.", text2: "她的猫非常胖而且很懒。", text3: "Béo  - 胖", audioFile: "1-100.mp3" },
+{ start: 145.028685, end: 147.884014, text: "Anh ấy trở nên gầy sau một thời gian dài ốm yếu.", text2: "他病了很久，变得很瘦。", text3: "Gầy  - 瘦", audioFile: "1-100.mp3" },
+{ start: 148.34619, end: 151.472132, text: "Nhân viên ở đây rất thân thiện và sẵn sàng giúp đỡ.", text2: "这里的员工非常友善，乐于助人。", text3: "Thân thiện  - 友善", audioFile: "1-100.mp3" },
+{ start: 151.934308, end: 155.611497, text: "Cô ấy là một người rất khó tính và yêu cầu cao trong công việc.", text2: "她是一个非常难搞的人，对工作要求很高。", text3: "Khó tính  - 难搞", audioFile: "1-100.mp3" },
+{ start: 156.063651, end: 159.179569, text: "Bé gái này rất dễ thương và ai cũng yêu quý.", text2: "这个小女孩非常可爱，人人都喜欢她。", text3: "Dễ thương  - 可爱", audioFile: "1-100.mp3" },
+{ start: 159.641746, end: 162.697528, text: "Anh ấy có thái độ dễ ghét, khiến người khác không thích.", text2: "他的态度令人讨厌，让人不喜欢。", text3: "Dễ ghét  - 讨厌", audioFile: "1-100.mp3" },
+{ start: 163.189773, end: 166.285646, text: "Cô ấy rất nhạy cảm và dễ bị tổn thương bởi lời nói.", text2: "她非常敏感，容易因言语而受到伤害。", text3: "Nhạy cảm  - 敏感", audioFile: "1-100.mp3" },
+{ start: 166.767868, end: 169.543016, text: "Anh ấy tỏ ra vô cảm trước nỗi đau của người khác.", text2: "他对别人的痛苦表现得很冷漠。", text3: "Vô cảm  - 冷漠", audioFile: "1-100.mp3" },
+{ start: 169.975125, end: 172.409501, text: "Ngôi nhà này rất sạch sẽ và gọn gàng.", text2: "这所房子非常干净整洁。", text3: "Sạch sẽ  - 干净", audioFile: "1-100.mp3" },
+{ start: 172.881701, end: 176.107868, text: "Chiếc áo này đã trở nên bẩn thỉu sau một ngày làm việc.", text2: "这件衬衫在工作一天后变得很肮脏。", text3: "Bẩn thỉu  - 肮脏", audioFile: "1-100.mp3" },
+{ start: 176.600113, end: 179.78619, text: "Khu vực này rất yên tĩnh, thích hợp để nghỉ ngơi.", text2: "这个区域非常安静，适合休息。", text3: "Yên tĩnh  - 安静", audioFile: "1-100.mp3" },
+{ start: 180.248367, end: 183.534671, text: "Quán cà phê này khá ồn ào, khó tập trung làm việc.", text2: "这家咖啡馆很吵闹，难以集中精力工作。", text3: "Ồn ào  - 吵闹", audioFile: "1-100.mp3" },
+{ start: 184.016893, end: 186.741927, text: "Cô ấy có giọng nói rất nhẹ nhàng và dễ nghe.", text2: "她的声音很温柔，听起来很舒服。", text3: "Nhẹ nhàng  - 温柔", audioFile: "1-100.mp3" },
+{ start: 187.174036, end: 190.189728, text: "Anh ấy cư xử rất thô lỗ khi nói chuyện với người khác.", text2: "他与人交谈时表现得很粗鲁。", text3: "Thô lỗ  - 粗鲁", audioFile: "1-100.mp3" },
+{ start: 190.651905, end: 193.106327, text: "Cô ấy luôn trung thực trong mọi tình huống.", text2: "她在任何情况下都非常诚实。", text3: "Trung thực  - 诚实", audioFile: "1-100.mp3" },
+{ start: 193.538435, end: 196.283515, text: "Anh ấy bị phát hiện là người dối trá trong giao dịch.", text2: "他在交易中被发现是个骗子。", text3: "Dối trá  - 欺诈", audioFile: "1-100.mp3" },
+{ start: 196.765737, end: 198.989637, text: "Cô giáo rất kiên nhẫn với các em nhỏ.", text2: "老师对孩子们非常有耐心。", text3: "Kiên nhẫn  - 耐心", audioFile: "1-100.mp3" },
+{ start: 199.501927, end: 201.826054, text: "Anh ấy thường xuyên vội vàng khi làm việc.", text2: "他工作时经常很匆忙。", text3: "Vội vàng  - 匆忙", audioFile: "1-100.mp3" },
+{ start: 202.298254, end: 205.113492, text: "Cô ấy rất hào phóng, luôn giúp đỡ người khác.", text2: "她非常慷慨，总是帮助别人。", text3: "Hào phóng  - 慷慨", audioFile: "1-100.mp3" },
+{ start: 205.565646, end: 208.451043, text: "Anh ấy quá ích kỷ và chỉ nghĩ đến lợi ích của mình.", text2: "他太自私了，只想着自己的利益。", text3: "Ích kỷ  - 自私", audioFile: "1-100.mp3" },
+{ start: 208.91322, end: 211.177211, text: "Rau củ này rất tươi và ngon miệng.", text2: "这些蔬菜非常新鲜，美味可口。", text3: "Tươi  - 新鲜", audioFile: "1-100.mp3" },
+{ start: 211.639388, end: 214.895624, text: "Những bông hoa này đã héo sau một tuần không được tưới nước.", text2: "这些花在一周没有浇水后枯萎了。", text3: "Héo  - 枯萎", audioFile: "1-100.mp3" },
+{ start: 215.387868, end: 217.551633, text: "Cô ấy còn rất trẻ và đầy nhiệt huyết.", text2: "她非常年轻，充满热情。", text3: "Trẻ  - 年轻", audioFile: "1-100.mp3" },
+{ start: 218.01381, end: 220.518345, text: "Ông ấy đã già và cần được chăm sóc đặc biệt.", text2: "他已经很老了，需要特别照顾。", text3: "Già  - 老", audioFile: "1-100.mp3" },
+{ start: 220.980522, end: 223.735624, text: "Hai người họ rất thân mật và thường xuyên gặp nhau.", text2: "他们俩非常亲密，经常见面。", text3: "Thân mật  - 亲密", audioFile: "1-100.mp3" },
+{ start: 224.187778, end: 227.484104, text: "Anh ấy cư xử rất lạnh lùng và không quan tâm đến người khác.", text2: "他表现得很冷淡，对别人漠不关心。", text3: "Lạnh lùng  - 冷淡", audioFile: "1-100.mp3" },
+{ start: 227.936259, end: 230.250363, text: "Cô ấy rất dũng cảm đối mặt với khó khăn.", text2: "她面对困难时非常勇敢。", text3: "Dũng cảm  - 勇敢", audioFile: "1-100.mp3" },
+{ start: 230.71254, end: 233.397483, text: "Anh ấy quá nhát gan để tham gia vào cuộc thi.", text2: "他太胆小了，不敢参加比赛。", text3: "Nhát gan  - 胆小", audioFile: "1-100.mp3" },
+{ start: 233.85966, end: 236.584694, text: "Bà ấy rất tốt bụng và luôn giúp đỡ hàng xóm.", text2: "她非常善良，总是帮助邻居。", text3: "Tốt bụng  - 善良", audioFile: "1-100.mp3" },
+{ start: 237.076939, end: 239.972358, text: "Hắn là một người rất ác độc và không ai tin tưởng.", text2: "他是一个非常恶毒的人，没有人信任他。", text3: "Ác độc  - 恶毒", audioFile: "1-100.mp3" },
+{ start: 240.394444, end: 242.407868, text: "Cô ấy rất hiền lành và dễ gần.", text2: "她非常温和，容易接近。", text3: "Hiền lành  - 温和", audioFile: "1-100.mp3" },
+{ start: 242.940204, end: 245.48483, text: "Con chó này rất hung dữ và khó kiểm soát.", text2: "这只狗非常凶狠，难以控制。", text3: "Hung dữ  - 凶狠", audioFile: "1-100.mp3" },
+{ start: 245.936984, end: 248.441519, text: "Câu chuyện này thật kỳ lạ và khó hiểu.", text2: "这个故事非常奇怪，难以理解。", text3: "Kỳ lạ  - 奇怪", audioFile: "1-100.mp3" },
+{ start: 248.903696, end: 252.330317, text: "Con đường này rất quen thuộc với tôi vì tôi đi qua đây mỗi ngày.", text2: "这条路对我来说很熟悉，因为我每天都走这条路。", text3: "Quen thuộc  - 熟悉", audioFile: "1-100.mp3" },
+{ start: 252.842608, end: 256.379478, text: "Cô ấy là một người rất hoạt bát và luôn tràn đầy năng lượng.", text2: "她是一个非常活泼且充满能量的人。", text3: "Hoạt bát  - 活泼", audioFile: "1-100.mp3" },
+{ start: 256.811587, end: 259.917483, text: "Anh ấy là người trầm lặng, ít nói và thích suy nghĩ.", text2: "他是一个沉默寡言的人，喜欢思考。", text3: "Trầm lặng  - 沉默", audioFile: "1-100.mp3" },
+{ start: 260.409728, end: 263.906508, text: "Việc này rất khó khăn và cần sự kiên nhẫn để hoàn thành.", text2: "这件事非常困难，需要耐心才能完成。", text3: "Khó khăn  - 困难", audioFile: "1-100.mp3" },
+{ start: 264.368685, end: 267.304195, text: "Bà ấy rất khoan dung và luôn tha thứ cho người khác.", text2: "她非常宽容，总是原谅别人。", text3: "Khoan dung  - 宽容", audioFile: "1-100.mp3" },
+{ start: 267.726281, end: 271.223061, text: "Anh ấy có tính cách hẹp hòi và không chấp nhận ý kiến khác biệt.", text2: "他的性格很狭隘，不能接受不同的意见。", text3: "Hẹp hòi  - 狭隘", audioFile: "1-100.mp3" },
+{ start: 271.665193, end: 274.13966, text: "Những kỷ niệm này rất quý giá đối với tôi.", text2: "这些回忆对我来说非常珍贵。", text3: "Quý giá  - 珍贵", audioFile: "1-100.mp3" },
+{ start: 274.601837, end: 277.246689, text: "Sản phẩm này trông rất rẻ tiền và không bền.", text2: "这款产品看起来很廉价，不耐用。", text3: "Rẻ tiền  - 廉价", audioFile: "1-100.mp3" },
+{ start: 277.708866, end: 280.453946, text: "Những lời khuyên của anh ấy rất sâu sắc và ý nghĩa.", text2: "他的建议非常深刻且有意义。", text3: "Sâu sắc  - 深刻", audioFile: "1-100.mp3" },
+{ start: 280.926145, end: 283.971905, text: "Suy nghĩ của anh ấy rất nông cạn và thiếu chiều sâu.", text2: "他的想法非常浅薄，缺乏深度。", text3: "Nông cạn  - 浅薄", audioFile: "1-100.mp3" },
+{ start: 284.434082, end: 287.439751, text: "Cô ấy có lòng thương cảm đối với những người gặp khó khăn.", text2: "她对遇到困难的人充满同情。", text3: "Thương cảm  - 同情", audioFile: "1-100.mp3" },
+{ start: 287.91195, end: 291.488912, text: "Hắn ta rất vô tình và không quan tâm đến cảm xúc của người khác.", text2: "他非常无情，不在乎别人的感受。", text3: "Vô tình  - 无情", audioFile: "1-100.mp3" },
+{ start: 291.951088, end: 295.437846, text: "Cô ấy rất hào hứng khi nhận được tin tức về công việc mới.", text2: "她收到新工作的消息时非常兴奋。", text3: "Hào hứng  - 兴奋", audioFile: "1-100.mp3" },
+{ start: 295.89, end: 298.705238, text: "Anh ấy cảm thấy chán nản khi công việc không suôn sẻ.", text2: "当工作不顺利时，他感到非常沮丧。", text3: "Chán nản  - 沮丧", audioFile: "1-100.mp3" },
+{ start: 299.217528, end: 302.38356, text: "Cô ấy mạnh dạn bày tỏ ý kiến của mình trước đám đông.", text2: "她勇敢地在众人面前表达了自己的意见。", text3: "Mạnh dạn  - 勇敢", audioFile: "1-100.mp3" },
+{ start: 302.845737, end: 306.061882, text: "Anh ấy rất rụt rè và thường không dám nói chuyện với người lạ.", text2: "他非常胆怯，通常不敢与陌生人交谈。", text3: "Rụt rè  - 胆怯", audioFile: "1-100.mp3" },
+{ start: 306.493991, end: 309.479615, text: "Người này rất đáng tin cậy và luôn giữ lời hứa.", text2: "这个人非常可靠，总是守信。", text3: "Đáng tin cậy  - 可靠", audioFile: "1-100.mp3" },
+{ start: 309.921746, end: 313.458617, text: "Anh ấy đã từng lừa dối nhiều người, do đó không đáng tin.", text2: "他曾经欺骗过很多人，所以不可信。", text3: "Không đáng tin  - 不可信", audioFile: "1-100.mp3" },
+{ start: 313.920794, end: 317.36746, text: "Dự án của họ đã thành công và mang lại lợi nhuận lớn.", text2: "他们的项目取得了成功，带来了巨大的利润。", text3: "Thành công  - 成功", audioFile: "1-100.mp3" },
+{ start: 317.809592, end: 320.524603, text: "Kế hoạch của anh ấy đã thất bại do thiếu chuẩn bị.", text2: "由于准备不足，他的计划失败了。", text3: "Thất bại  - 失败", audioFile: "1-100.mp3" },
+{ start: 321.026871, end: 324.102698, text: "Cô ấy là một người rất tốt và luôn giúp đỡ người khác.", text2: "她是一个非常好的人，总是帮助别人。", text3: "Tốt  - 好", audioFile: "1-100.mp3" },
+{ start: 0, end: 3.046327, text: "Hành vi của hắn thật xấu xa và không thể tha thứ.", text2: "他的行为非常恶劣，无法原谅。", text3: "Xấu xa  - 恶劣", audioFile: "101-200.mp3" },
+{ start: 3.488458, end: 6.484104, text: "Con chó của anh ấy rất trung thành và luôn ở bên chủ.", text2: "他的狗非常忠诚，总是陪在主人身边。", text3: "Trung thành  - 忠诚", audioFile: "101-200.mp3" },
+{ start: 6.926236, end: 9.871769, text: "Anh ấy bị tố cáo đã phản bội đồng đội trong cuộc thi.", text2: "他被指控在比赛中背叛了队友。", text3: "Phản bội  - 背叛", audioFile: "101-200.mp3" },
+{ start: 10.374036, end: 13.319569, text: "Cô ấy cảm thấy rất sung sướng khi đạt được ước mơ.", text2: "当她实现梦想时感到非常快乐。", text3: "Sung sướng  - 快乐", audioFile: "101-200.mp3" },
+{ start: 13.801791, end: 16.887642, text: "Họ đã trải qua những tháng ngày khổ sở trong chiến tranh.", text2: "他们在战争中经历了艰难的日子。", text3: "Khổ sở  - 苦难", audioFile: "101-200.mp3" },
+{ start: 17.319751, end: 20.736349, text: "Ông ấy là một nhà lãnh đạo vĩ đại và được nhiều người kính trọng.", text2: "他是一位伟大的领导者，受到许多人的尊敬。", text3: "Vĩ đại  - 伟大", audioFile: "101-200.mp3" },
+{ start: 21.218571, end: 23.973673, text: "So với vũ trụ, con người thật nhỏ bé.", text2: "相对于宇宙，人类显得渺小。", text3: "Nhỏ bé  - 渺小", audioFile: "101-200.mp3" },
+{ start: 24.445873, end: 27.722154, text: "Ngôi nhà này rất rộng rãi và có đủ chỗ cho cả gia đình.", text2: "这所房子非常宽敞，足够整个家庭居住。", text3: "Rộng rãi  - 宽敞", audioFile: "101-200.mp3" },
+{ start: 28.184331, end: 30.728957, text: "Căn phòng này quá chật chội để tổ chức tiệc.", text2: "这个房间太拥挤了，无法举办聚会。", text3: "Chật chội  - 拥挤", audioFile: "101-200.mp3" },
+{ start: 31.201156, end: 34.44737, text: "Sự nghiệp của anh ấy đang thăng hoa sau nhiều năm nỗ lực.", text2: "经过多年的努力，他的事业正在升华。", text3: "Thăng hoa  - 升华", audioFile: "101-200.mp3" },
+{ start: 34.929592, end: 38.00542, text: "Anh ấy sống trong trạng thái trầm uất sau khi mất người thân.", text2: "失去亲人后，他一直处于忧郁的状态。", text3: "Trầm uất  - 忧郁", audioFile: "101-200.mp3" },
+{ start: 38.487642, end: 41.19263, text: "Bữa tiệc rất sôi nổi với nhiều hoạt động vui vẻ.", text2: "派对非常热闹，有很多有趣的活动。", text3: "Sôi nổi  - 热闹", audioFile: "101-200.mp3" },
+{ start: 41.694898, end: 44.941111, text: "Không khí trong phòng trở nên trầm lắng sau khi nghe tin buồn.", text2: "听到坏消息后，房间里的气氛变得沉静。", text3: "Trầm lắng  - 沉静", audioFile: "101-200.mp3" },
+{ start: 45.403288, end: 49.381156, text: "Tâm hồn cô ấy thật trong sáng và không bị vấy bẩn bởi thế giới bên ngoài.", text2: "她的心灵非常纯洁，没有被外界污染。", text3: "Trong sáng  - 纯洁", audioFile: "101-200.mp3" },
+{ start: 49.843333, end: 52.909138, text: "Kính cửa sổ trở nên mờ đục do bụi bẩn tích tụ.", text2: "窗玻璃由于积尘而变得模糊。", text3: "Mờ đục  - 模糊", audioFile: "101-200.mp3" },
+{ start: 53.371315, end: 55.865828, text: "Cô ấy sống một cuộc sống giản dị nhưng hạnh phúc.", text2: "她过着简朴但幸福的生活。", text3: "Giản dị  - 简朴", audioFile: "101-200.mp3" },
+{ start: 56.34805, end: 60.436168, text: "Ngôi làng này rất bình yên, không bị ảnh hưởng bởi cuộc sống hiện đại.", text2: "这个村庄非常平静，没有受到现代生活的影响。", text3: "Bình yên  - 平静", audioFile: "101-200.mp3" },
+{ start: 60.928413, end: 64.064376, text: "Phố này luôn náo nhiệt với nhiều cửa hàng và quán ăn.", text2: "这条街总是热闹非凡，有很多商店和餐馆。", text3: "Náo nhiệt  - 热闹", audioFile: "101-200.mp3" },
+{ start: 64.526553, end: 67.782789, text: "Cô ấy luôn nghiêm túc trong công việc và không chấp nhận sai sót.", text2: "她在工作中非常严肃，不接受错误。", text3: "Nghiêm túc  - 严肃", audioFile: "101-200.mp3" },
+{ start: 68.244966, end: 72.182744, text: "Sau một ngày làm việc mệt mỏi, anh ấy thích thư giãn bằng cách đọc sách.", text2: "在疲惫的一天工作之后，他喜欢通过阅读来放松。", text3: "Thư giãn  - 放松", audioFile: "101-200.mp3" },
+{ start: 72.654943, end: 75.600476, text: "Cô ấy có gu thời trang rất tinh tế và sang trọng.", text2: "她的时尚品味非常精致和高雅。", text3: "Tinh tế  - 精致", audioFile: "101-200.mp3" },
+{ start: 76.072676, end: 79.39907, text: "Thiết kế của sản phẩm này khá thô kệch và thiếu tinh tế.", text2: "这款产品的设计相当粗糙，缺乏精致感。", text3: "Thô kệch  - 粗糙", audioFile: "101-200.mp3" },
+{ start: 79.861247, end: 82.696531, text: "Anh ấy luôn đưa ra quyết định sáng suốt trong công việc.", text2: "他在工作中总是做出明智的决定。", text3: "Sáng suốt  - 明智", audioFile: "101-200.mp3" },
+{ start: 83.238889, end: 86.645465, text: "Hướng đi của dự án này khá mù mờ và thiếu định hướng.", text2: "这个项目的方向相当模糊，缺乏明确的目标。", text3: "Mù mờ  - 模糊", audioFile: "101-200.mp3" },
+{ start: 87.097619, end: 89.952948, text: "Cô ấy rất tự tin trong việc thuyết trình trước đám đông.", text2: "她在大众面前演讲时非常自信。", text3: "Tự tin  - 自信", audioFile: "101-200.mp3" },
+{ start: 90.385057, end: 93.551088, text: "Anh ấy thường cảm thấy tự ti vì không đạt được thành công.", text2: "他因为没有成功而常常感到自卑。", text3: "Tự ti  - 自卑", audioFile: "101-200.mp3" },
+{ start: 94.003243, end: 97.119161, text: "Cô ấy luôn cư xử rất lịch sự và tôn trọng người khác.", text2: "她总是表现得非常礼貌，尊重他人。", text3: "Lịch sự  - 礼貌", audioFile: "101-200.mp3" },
+{ start: 97.581338, end: 100.827551, text: "Hành vi của anh ấy rất khiếm nhã và không được chấp nhận.", text2: "他的行为非常无礼，不被接受。", text3: "Khiếm nhã  - 无礼", audioFile: "101-200.mp3" },
+{ start: 101.269683, end: 104.335488, text: "Cảnh hoàng hôn trên biển thật kỳ diệu và đẹp đẽ.", text2: "海上的日落非常奇妙和美丽。", text3: "Kỳ diệu  - 奇妙", audioFile: "101-200.mp3" },
+{ start: 104.837755, end: 107.913583, text: "Anh ấy chỉ là một người tầm thường, không có gì nổi bật.", text2: "他只是一个平庸的人，没有什么特别之处。", text3: "Tầm thường  - 平庸", audioFile: "101-200.mp3" },
+{ start: 108.405828, end: 111.7222, text: "Những bông hoa trong vườn nở rực rỡ dưới ánh mặt trời.", text2: "花园里的花朵在阳光下盛开得灿烂。", text3: "Rực rỡ  - 灿烂", audioFile: "101-200.mp3" },
+{ start: 112.194399, end: 115.069773, text: "Bầu trời trở nên u ám khi cơn bão sắp đến.", text2: "暴风雨即将来临，天空变得阴暗。", text3: "U ám  - 阴暗", audioFile: "101-200.mp3" },
+{ start: 115.501882, end: 118.828277, text: "Bài kiểm tra này tương đối dễ đối với những ai đã học kỹ.", text2: "对于那些学习认真的人来说，这次考试相对容易。", text3: "Tương đối  - 相对", audioFile: "101-200.mp3" },
+{ start: 119.300476, end: 122.336213, text: "Anh ấy đòi hỏi sự trung thực tuyệt đối từ các nhân viên.", text2: "他要求员工绝对诚实。", text3: "Tuyệt đối  - 绝对", audioFile: "101-200.mp3" },
+{ start: 122.768322, end: 126.515669, text: "Ông ấy có tư tưởng bảo thủ và khó chấp nhận những ý tưởng mới.", text2: "他的思想非常保守，难以接受新的想法。", text3: "Bảo thủ  - 保守", audioFile: "101-200.mp3" },
+{ start: 126.977846, end: 130.30424, text: "Cô ấy rất cởi mở và sẵn sàng lắng nghe ý kiến của người khác.", text2: "她非常开放，愿意倾听别人的意见。", text3: "Cởi mở  - 开放", audioFile: "101-200.mp3" },
+{ start: 130.736349, end: 133.280975, text: "Công ty này có chính sách làm việc rất linh hoạt.", text2: "这家公司有非常灵活的工作政策。", text3: "Linh hoạt  - 灵活", audioFile: "101-200.mp3" },
+{ start: 133.723107, end: 136.508277, text: "Anh ấy luôn tuân thủ các quy tắc một cách cứng nhắc.", text2: "他总是死板地遵守规则。", text3: "Cứng nhắc  - 死板", audioFile: "101-200.mp3" },
+{ start: 137.000522, end: 140.26678, text: "Cô ấy là một người rất bền bỉ và không dễ dàng bỏ cuộc.", text2: "她是一个非常持久的人，不会轻易放弃。", text3: "Bền bỉ  - 持久", audioFile: "101-200.mp3" },
+{ start: 140.698889, end: 143.874943, text: "Anh ấy hoàn thành công việc một cách mau chóng và hiệu quả.", text2: "他迅速而有效地完成了工作。", text3: "Mau chóng  - 迅速", audioFile: "101-200.mp3" },
+{ start: 144.317075, end: 147.292676, text: "Những lời nói của anh ấy rất chân thật và đáng tin cậy.", text2: "他说的话非常真实，值得信赖。", text3: "Chân thật  - 真实", audioFile: "101-200.mp3" },
+{ start: 147.754853, end: 150.720431, text: "Cô ấy bị chỉ trích là người giả tạo và không chân thành.", text2: "她被批评为虚伪且不真诚的人。", text3: "Giả tạo  - 虚伪", audioFile: "101-200.mp3" },
+{ start: 151.162562, end: 154.519025, text: "Buổi diễn của họ thật hoàn hảo và không có lỗi lầm nào.", text2: "他们的表演非常完美，没有任何错误。", text3: "Hoàn hảo  - 完美", audioFile: "101-200.mp3" },
+{ start: 154.981202, end: 157.716259, text: "Dự án này có nhiều thiếu sót cần được khắc phục.", text2: "这个项目有很多需要弥补的缺陷。", text3: "Thiếu sót  - 缺陷", audioFile: "101-200.mp3" },
+{ start: 158.178435, end: 161.164059, text: "Anh ấy rất thẳng thắn trong việc đưa ra ý kiến của mình.", text2: "他在表达意见时非常直率。", text3: "Thẳng thắn  - 直率", audioFile: "101-200.mp3" },
+{ start: 161.656304, end: 164.812313, text: "Cô ấy nói chuyện rất vòng vo, không đi vào trọng tâm.", text2: "她说话总是拐弯抹角，不切入正题。", text3: "Vòng vo  - 拐弯抹角", audioFile: "101-200.mp3" },
+{ start: 165.27449, end: 168.310227, text: "Tình hình tài chính của công ty hiện tại khá khả quan.", text2: "目前公司的财务状况相当乐观。", text3: "Khả quan  - 乐观", audioFile: "101-200.mp3" },
+{ start: 168.752358, end: 171.838209, text: "Điều kiện thời tiết này rất bất lợi cho việc xây dựng.", text2: "这种天气条件对建筑施工非常不利。", text3: "Bất lợi  - 不利", audioFile: "101-200.mp3" },
+{ start: 172.28034, end: 174.865057, text: "Cơn đau đầu của cô ấy dai dẳng suốt nhiều ngày.", text2: "她的头痛持续了好几天。", text3: "Dai dẳng  - 持续", audioFile: "101-200.mp3" },
+{ start: 175.367324, end: 178.7739, text: "Họ đưa ra quyết định một cách chóng vánh mà không cân nhắc kỹ.", text2: "他们迅速地做出了决定，没有仔细考虑。", text3: "Chóng vánh  - 迅速", audioFile: "101-200.mp3" },
+{ start: 179.2461, end: 182.151542, text: "Cuốn sách này rất hấp dẫn và khó có thể đặt xuống.", text2: "这本书非常吸引人，让人难以放下。", text3: "Hấp dẫn  - 吸引", audioFile: "101-200.mp3" },
+{ start: 182.623741, end: 185.489093, text: "Bộ phim này khá nhàm chán và không có gì đặc biệt.", text2: "这部电影相当无聊，没有什么特别之处。", text3: "Nhàm chán  - 无聊", audioFile: "101-200.mp3" },
+{ start: 185.941247, end: 188.806599, text: "Anh ấy luôn giữ thái độ tích cực trong mọi hoàn cảnh.", text2: "他在任何情况下都保持积极的态度。", text3: "Tích cực  - 积极", audioFile: "101-200.mp3" },
+{ start: 189.268776, end: 192.565102, text: "Cô ấy có cái nhìn tiêu cực về tương lai sau khi thất bại.", text2: "失败后，她对未来持消极看法。", text3: "Tiêu cực  - 消极", audioFile: "101-200.mp3" },
+{ start: 193.017256, end: 196.243424, text: "Ông ấy luôn giữ lập trường vững vàng trong mọi tình huống.", text2: "他在任何情况下都保持坚定的立场。", text3: "Vững vàng  - 坚定", audioFile: "101-200.mp3" },
+{ start: 196.675533, end: 199.821519, text: "Anh ấy bắt đầu dao động khi nghe những lời chỉ trích từ đồng nghiệp.", text2: "当听到同事的批评时，他开始动摇了。", text3: "Dao động  - 动摇", audioFile: "101-200.mp3" },
+{ start: 200.283696, end: 203.11898, text: "Anh ấy có thân hình khỏe khoắn nhờ tập luyện đều đặn.", text2: "他通过规律的锻炼保持了健壮的体格。", text3: "Khỏe khoắn  - 健壮", audioFile: "101-200.mp3" },
+{ start: 203.581156, end: 206.636939, text: "Cô ấy cảm thấy rất mệt mỏi sau một ngày làm việc dài.", text2: "她在长时间的工作后感到非常疲惫。", text3: "Mệt mỏi  - 疲惫", audioFile: "101-200.mp3" },
+{ start: 207.119161, end: 210.475624, text: "Ông ấy là một người lãnh đạo rất quyết đoán và không chần chừ.", text2: "他是一位非常果断的领导，从不犹豫。", text3: "Quyết đoán  - 果断", audioFile: "101-200.mp3" },
+{ start: 210.947823, end: 214.324331, text: "Cô ấy do dự không biết có nên chấp nhận lời mời hay không.", text2: "她犹豫着是否应该接受邀请。", text3: "Do dự  - 犹豫", audioFile: "101-200.mp3" },
+{ start: 214.776485, end: 217.641837, text: "Quyết định của anh ấy thật nông nổi và thiếu suy nghĩ.", text2: "他的决定非常浅薄，缺乏考虑。", text3: "Nông nổi  - 浅薄", audioFile: "101-200.mp3" },
+{ start: 218.134082, end: 221.119705, text: "Cô ấy có khả năng nhạy bén trong việc giải quyết vấn đề.", text2: "她在解决问题方面非常敏锐。", text3: "Nhạy bén  - 敏锐", audioFile: "101-200.mp3" },
+{ start: 221.601927, end: 224.146553, text: "Anh ấy làm việc rất chậm chạp và thường trễ hạn.", text2: "他的工作速度很慢，经常迟交。", text3: "Chậm chạp  - 缓慢", audioFile: "101-200.mp3" },
+{ start: 224.578662, end: 227.554263, text: "Bữa tối dưới ánh nến rất lãng mạn và ấm áp.", text2: "烛光晚餐非常浪漫和温馨。", text3: "Lãng mạn  - 浪漫", audioFile: "101-200.mp3" },
+{ start: 228.026463, end: 231.483152, text: "Anh ấy là người rất thực dụng, luôn nghĩ đến lợi ích thực tế.", text2: "他是一个非常实用的人，总是考虑实际利益。", text3: "Thực dụng  - 实用", audioFile: "101-200.mp3" },
+{ start: 231.955351, end: 236.133673, text: "Cô ấy là một người có trí tuệ cao và luôn tìm ra giải pháp sáng tạo.", text2: "她是一个非常有智慧的人，总是能找到创造性的解决方案。", text3: "Trí tuệ  - 智慧", audioFile: "101-200.mp3" },
+{ start: 236.605873, end: 240.172812, text: "Hành động của hắn ta thật ngu xuẩn và gây hậu quả nghiêm trọng.", text2: "他的行为非常愚蠢，导致了严重的后果。", text3: "Ngu xuẩn  - 愚蠢", audioFile: "101-200.mp3" },
+{ start: 240.655034, end: 243.851134, text: "Cô bé này rất đáng yêu và ai cũng thích chơi với em.", text2: "这个小女孩非常可爱，人人都喜欢和她玩。", text3: "Đáng yêu  - 可爱", audioFile: "101-200.mp3" },
+{ start: 244.283243, end: 246.847914, text: "Cô ấy cảm thấy rất khó chịu khi bị hiểu lầm.", text2: "她被误解时感到非常难受。", text3: "Khó chịu  - 难受", audioFile: "101-200.mp3" },
+{ start: 247.300068, end: 249.90483, text: "Anh ấy rất dễ tính và không bao giờ phàn nàn.", text2: "他非常好脾气，从不抱怨。", text3: "Dễ tính  - 好脾气", audioFile: "101-200.mp3" },
+{ start: 250.367007, end: 254.344875, text: "Bài thuyết trình của anh ấy rất sống động và thu hút sự chú ý của mọi người.", text2: "他的演讲非常生动，吸引了大家的注意。", text3: "Sống động  - 生动", audioFile: "101-200.mp3" },
+{ start: 254.797029, end: 257.792676, text: "Cử chỉ của anh ấy khá đơ cứng và thiếu tự nhiên.", text2: "他的动作相当僵硬，缺乏自然。", text3: "Đơ cứng  - 僵硬", audioFile: "101-200.mp3" },
+{ start: 258.224785, end: 261.29059, text: "Tấm thảm này rất mềm mại và dễ chịu khi chạm vào.", text2: "这张地毯非常柔软，触感舒适。", text3: "Mềm mại  - 柔软", audioFile: "101-200.mp3" },
+{ start: 261.742744, end: 265.14932, text: "Chiếc ghế này rất cứng cáp và có thể chịu được trọng lượng lớn.", text2: "这把椅子非常结实，能承受很大的重量。", text3: "Cứng cáp  - 结实", audioFile: "101-200.mp3" },
+{ start: 265.631542, end: 268.717392, text: "Gia đình cô ấy sống trong sự giàu sang và xa hoa.", text2: "她的家庭生活在富有和奢华中。", text3: "Giàu sang  - 富有", audioFile: "101-200.mp3" },
+{ start: 269.169546, end: 272.295488, text: "Họ phải đối mặt với cảnh bần cùng do mất mùa liên tiếp.", text2: "由于连续的歉收，他们陷入了贫困。", text3: "Bần cùng  - 贫困", audioFile: "101-200.mp3" },
+{ start: 272.727596, end: 276.084059, text: "Bà ấy luôn cư xử hòa nhã và được mọi người yêu mến.", text2: "她总是表现得很和蔼，受到大家的喜爱。", text3: "Hòa nhã  - 和蔼", audioFile: "101-200.mp3" },
+{ start: 276.52619, end: 279.602018, text: "Vấn đề này rất tế nhị và cần được xử lý cẩn thận.", text2: "这个问题非常微妙，需要小心处理。", text3: "Tế nhị  - 微妙", audioFile: "101-200.mp3" },
+{ start: 280.064195, end: 283.39059, text: "Anh ấy rơi vào tình huống khó xử khi phải chọn giữa hai bên.", text2: "他在必须在两者之间做出选择时感到非常尴尬。", text3: "Khó xử  - 尴尬", audioFile: "101-200.mp3" },
+{ start: 283.822698, end: 287.018798, text: "Cô ấy có phong cách ăn mặc rất thanh lịch và tinh tế.", text2: "她的穿衣风格非常优雅和精致。", text3: "Thanh lịch  - 优雅", audioFile: "101-200.mp3" },
+{ start: 287.490998, end: 290.586871, text: "Hành động của anh ấy rất kém duyên và làm người khác khó chịu.", text2: "他的行为非常不雅，让别人感到不舒服。", text3: "Kém duyên  - 不雅", audioFile: "101-200.mp3" },
+{ start: 291.079116, end: 294.716213, text: "Cuộc sống hoang dã trong rừng khiến anh ấy trở nên mạnh mẽ hơn.", text2: "在森林中的野性生活使他变得更加强壮。", text3: "Hoang dã  - 野性", audioFile: "101-200.mp3" },
+{ start: 295.158345, end: 297.632812, text: "Cuộc sống thành thị bận rộn và đầy thử thách.", text2: "城市生活繁忙而充满挑战。", text3: "Thành thị  - 城市", audioFile: "101-200.mp3" },
+{ start: 298.064921, end: 301.230952, text: "Anh ấy rất tỉ mỉ trong công việc và luôn chú ý đến chi tiết.", text2: "他在工作中非常细致，总是注意细节。", text3: "Tỉ mỉ  - 细致", audioFile: "101-200.mp3" },
+{ start: 301.713175, end: 305.881474, text: "Cô ấy làm việc một cách cẩu thả, không chú ý đến kết quả cuối cùng.", text2: "她工作时非常马虎，不注重最终结果。", text3: "Cẩu thả  - 马虎", audioFile: "101-200.mp3" },
+{ start: 306.403787, end: 309.419478, text: "Gia đình họ sống một cuộc sống sung túc và hạnh phúc.", text2: "他们的家庭生活富足且幸福。", text3: "Sung túc  - 富足", audioFile: "101-200.mp3" },
+{ start: 309.86161, end: 312.977528, text: "Tài nguyên nước sạch ngày càng khan hiếm trên toàn cầu.", text2: "全球清洁水资源日益稀缺。", text3: "Khan hiếm  - 稀缺", audioFile: "101-200.mp3" },
+{ start: 313.41966, end: 316.595714, text: "Chuyến du lịch đó thực sự là một kỷ niệm đáng nhớ.", text2: "那次旅行真的是一个难忘的回忆。", text3: "Đáng nhớ  - 难忘", audioFile: "101-200.mp3" },
+{ start: 317.057891, end: 319.61254, text: "Một số thông tin không quan trọng rất dễ quên.", text2: "一些不重要的信息很容易忘记。", text3: "Dễ quên  - 容易忘记", audioFile: "101-200.mp3" },
+{ start: 320.084739, end: 322.619342, text: "Cô ấy đã chuẩn bị kỹ lưỡng cho buổi thuyết trình.", text2: "她为演讲做了彻底的准备。", text3: "Kỹ lưỡng  - 彻底", audioFile: "101-200.mp3" },
+{ start: 323.061474, end: 326.658481, text: "Anh ấy có cách nhìn nhận vấn đề rất hời hợt, thiếu chiều sâu.", text2: "他看待问题的方式非常肤浅，缺乏深度。", text3: "Hời hợt  - 肤浅", audioFile: "101-200.mp3" },
+{ start: 327.110635, end: 329.945918, text: "Màu sắc trong phòng này rất hài hòa và dễ chịu.", text2: "这个房间的颜色非常和谐，让人感到舒适。", text3: "Hài hòa  - 和谐", audioFile: "101-200.mp3" },
+{ start: 330.438163, end: 333.503968, text: "Hai người họ thường xuyên xảy ra mâu thuẫn trong quan điểm.", text2: "他们俩经常在观点上发生矛盾。", text3: "Mâu thuẫn  - 矛盾", audioFile: "101-200.mp3" },
+{ start: 333.936077, end: 336.88161, text: "Cô ấy đã trưởng thành sau nhiều thử thách trong cuộc sống.", text2: "她在生活中经历了许多考验后变得成熟。", text3: "Trưởng thành  - 成熟", audioFile: "101-200.mp3" },
+{ start: 337.313719, end: 340.770408, text: "Cậu bé này còn rất non nớt và chưa hiểu hết về cuộc sống.", text2: "这个男孩非常幼稚，对生活还不了解。", text3: "Non nớt  - 幼稚", audioFile: "101-200.mp3" },
+{ start: 341.242608, end: 343.967642, text: "Anh ấy rất mạnh mẽ trong việc đối mặt với khó khăn.", text2: "他在面对困难时非常坚强。", text3: "Mạnh mẽ  - 坚强", audioFile: "101-200.mp3" },
+{ start: 344.429819, end: 347.064649, text: "Cô ấy cảm thấy yếu đuối và cần được động viên.", text2: "她感到软弱，需要得到鼓励。", text3: "Yếu đuối  - 软弱", audioFile: "101-200.mp3" },
+{ start: 347.496757, end: 351.183968, text: "Nhóm của cô ấy đã đưa ra nhiều ý tưởng sáng tạo trong dự án này.", text2: "她的团队在这个项目中提出了许多创造性的想法。", text3: "Sáng tạo  - 创造性", audioFile: "101-200.mp3" },
+{ start: 351.656168, end: 355.062744, text: "Việc lặp lại cùng một công việc hàng ngày khiến anh ấy chán nản.", text2: "每天重复相同的工作让他感到沮丧。", text3: "Lặp lại  - 重复", audioFile: "101-200.mp3" },
+{ start: 355.575034, end: 358.741066, text: "Ông ấy rất khắt khe trong việc đánh giá chất lượng sản phẩm.", text2: "他在评估产品质量时非常严苛。", text3: "Khắt khe  - 严苛", audioFile: "101-200.mp3" },
+{ start: 0, end: 2.926054, text: "Cô ấy cảm thấy rất thoải mái khi ngồi trên chiếc ghế này.", text2: "她坐在这张椅子上感觉非常舒适。", text3: "Thoải mái  - 舒适", audioFile: "201-300.mp3" },
+{ start: 3.398254, end: 7.055397, text: "Mối quan hệ giữa hai người trở nên xa cách sau khi cãi nhau.", text2: "两人吵架后关系变得疏远。", text3: "Xa cách  - 疏远", audioFile: "201-300.mp3" },
+{ start: 7.527596, end: 10.823923, text: "Thời tiết hôm nay rất dễ chịu, thích hợp để đi dạo.", text2: "今天的天气非常愉快，适合散步。", text3: "Dễ chịu  - 愉快", audioFile: "201-300.mp3" },
+{ start: 11.2861, end: 14.93322, text: "Anh ấy cảm thấy bức bối khi phải ở trong phòng kín suốt cả ngày.", text2: "整天呆在密闭的房间里让他感到很郁闷。", text3: "Bức bối  - 郁闷", audioFile: "201-300.mp3" },
+{ start: 15.395397, end: 18.000159, text: "Cô ấy hoàn thành bài kiểm tra một cách nhanh chóng.", text2: "她快速完成了测试。", text3: "Nhanh chóng  - 快速", audioFile: "201-300.mp3" },
+{ start: 18.44229, end: 21.367778, text: "Anh ấy làm việc rất lề mề và không bao giờ đúng hạn.", text2: "他工作非常拖沓，从未按时完成。", text3: "Lề mề  - 拖沓", audioFile: "201-300.mp3" },
+{ start: 21.779841, end: 24.835624, text: "Ông ấy là một người cha rất nghiêm khắc và có kỷ luật.", text2: "他是一位非常严厉且有纪律的父亲。", text3: "Nghiêm khắc  - 严厉", audioFile: "201-300.mp3" },
+{ start: 25.317846, end: 28.022834, text: "Trận mưa dữ dội khiến đường phố bị ngập lụt.", text2: "激烈的暴雨导致街道被淹没。", text3: "Dữ dội  - 激烈", audioFile: "201-300.mp3" },
+{ start: 28.474989, end: 31.310272, text: "Cuộc sống ở vùng quê rất êm đềm và yên tĩnh.", text2: "乡村的生活非常平静和安宁。", text3: "Êm đềm  - 平静", audioFile: "201-300.mp3" },
+{ start: 31.752404, end: 35.098844, text: "Cô ấy luôn chọn những phương tiện an toàn khi đi du lịch.", text2: "她在旅行时总是选择安全的交通工具。", text3: "An toàn  - 安全", audioFile: "201-300.mp3" },
+{ start: 35.550998, end: 38.526599, text: "Leo núi trong điều kiện thời tiết xấu là rất nguy hiểm.", text2: "在恶劣的天气条件下爬山非常危险。", text3: "Nguy hiểm  - 危险", audioFile: "201-300.mp3" },
+{ start: 38.978753, end: 42.064603, text: "Căn phòng này rất sáng sủa nhờ có nhiều cửa sổ lớn.", text2: "这间房间因为有许多大窗户而非常明亮。", text3: "Sáng sủa  - 明亮", audioFile: "201-300.mp3" },
+{ start: 42.506735, end: 45.061383, text: "Anh ấy cảm thấy mù mịt về tương lai của mình.", text2: "他对自己的未来感到迷茫。", text3: "Mù mịt  - 迷茫", audioFile: "201-300.mp3" },
+{ start: 45.513537, end: 48.829909, text: "Dù gặp khó khăn, cô ấy vẫn giữ tinh thần lạc quan.", text2: "即使遇到困难，她依然保持乐观的心态。", text3: "Lạc quan  - 乐观", audioFile: "201-300.mp3" },
+{ start: 49.302109, end: 52.367914, text: "Anh ấy trở nên bi quan sau khi thất bại trong công việc.", text2: "工作失败后，他变得非常悲观。", text3: "Bi quan  - 悲观", audioFile: "201-300.mp3" },
+{ start: 52.820068, end: 56.497256, text: "Thành phố này trở nên xa lạ đối với cô ấy sau nhiều năm xa cách.", text2: "这座城市在多年之后对她来说变得陌生。", text3: "Xa lạ  - 陌生", audioFile: "201-300.mp3" },
+{ start: 56.979478, end: 60.005193, text: "Họ đã chào đón cô ấy bằng một sự nồng nhiệt đặc biệt.", text2: "他们以特别的热情欢迎了她。", text3: "Nồng nhiệt  - 热情", audioFile: "201-300.mp3" },
+{ start: 60.477392, end: 62.891723, text: "Anh ấy tỏ ra lạnh nhạt trong suốt buổi họp.", text2: "他在整个会议中都表现得非常冷淡。", text3: "Lạnh nhạt  - 冷淡", audioFile: "201-300.mp3" },
+{ start: 63.3539, end: 66.189184, text: "Cô ấy luôn giữ được sự điềm tĩnh trong mọi tình huống.", text2: "她在任何情况下都保持冷静。", text3: "Điềm tĩnh  - 冷静", audioFile: "201-300.mp3" },
+{ start: 66.641338, end: 69.125828, text: "Cảm xúc của anh ấy sôi sục khi nghe tin tức.", text2: "听到消息时，他的情绪沸腾了。", text3: "Sôi sục  - 沸腾", audioFile: "201-300.mp3" },
+{ start: 69.598027, end: 71.751769, text: "Anh ấy bị phát hiện lừa dối đồng nghiệp.", text2: "他被发现欺骗了同事。", text3: "Lừa dối  - 欺骗", audioFile: "201-300.mp3" },
+{ start: 72.1939, end: 75.299796, text: "Hành vi phô trương của cô ấy khiến người khác khó chịu.", text2: "她的炫耀行为让别人感到不舒服。", text3: "Phô trương  - 炫耀", audioFile: "201-300.mp3" },
+{ start: 75.822109, end: 78.396803, text: "Họ thấu hiểu và luôn hỗ trợ lẫn nhau.", text2: "他们彼此体谅，总是互相支持。", text3: "Thấu hiểu  - 体谅", audioFile: "201-300.mp3" },
+{ start: 78.869002, end: 81.974898, text: "Anh ấy không hiểu lý do tại sao mọi người lại phản ứng như vậy.", text2: "他不明白为什么大家会有这样的反应。", text3: "Không hiểu  - 不明白", audioFile: "201-300.mp3" },
+{ start: 82.407007, end: 85.552993, text: "Cánh đồng này rộng lớn và kéo dài đến tận chân trời.", text2: "这片田野非常广阔，延伸到地平线。", text3: "Rộng lớn  - 广阔", audioFile: "201-300.mp3" },
+{ start: 86.01517, end: 88.780295, text: "Căn phòng bé nhỏ nhưng được bố trí rất tiện nghi.", text2: "房间虽然小巧，但布置得非常舒适。", text3: "Bé nhỏ  - 小巧", audioFile: "201-300.mp3" },
+{ start: 89.262517, end: 91.94746, text: "Cô ấy luôn bao dung với những lỗi lầm của người khác.", text2: "她对别人的错误总是非常宽容。", text3: "Bao dung  - 宽容", audioFile: "201-300.mp3" },
+{ start: 92.409637, end: 96.006644, text: "Hành vi độc ác của hắn ta đã gây ra nhiều đau khổ cho người khác.", text2: "他的恶毒行为给别人带来了很多痛苦。", text3: "Độc ác  - 恶毒", audioFile: "201-300.mp3" },
+{ start: 96.448776, end: 99.845329, text: "Anh ấy luôn chú ý giữ gìn sức khỏe và tập luyện đều đặn.", text2: "他总是注意保持健康并定期锻炼。", text3: "Mạnh khỏe  - 健康", audioFile: "201-300.mp3" },
+{ start: 100.28746, end: 104.335488, text: "Sau một thời gian dài ốm, cô ấy trở nên yếu ớt và mệt mỏi.", text2: "长期生病后，她变得非常虚弱和疲惫。", text3: "Yếu ớt  - 虚弱", audioFile: "201-300.mp3" },
+{ start: 104.807687, end: 108.665283, text: "Ngôi nhà được thiết kế theo phong cách hiện đại với các tiện nghi tối tân.", text2: "这座房子采用了现代风格设计，配备了最先进的设施。", text3: "Hiện đại  - 现代", audioFile: "201-300.mp3" },
+{ start: 109.137483, end: 112.393719, text: "Phương pháp này đã trở nên lỗi thời và cần được thay thế.", text2: "这种方法已经过时，需要更换。", text3: "Lỗi thời  - 过时", audioFile: "201-300.mp3" },
+{ start: 112.875941, end: 116.44288, text: "Bà ấy rất nhân từ và luôn giúp đỡ những người gặp khó khăn.", text2: "她非常慈悲，总是帮助那些有困难的人。", text3: "Nhân từ  - 慈悲", audioFile: "201-300.mp3" },
+{ start: 116.905057, end: 120.121202, text: "Cô ấy luôn giữ được vẻ trẻ trung dù đã qua tuổi trung niên.", text2: "虽然已经到了中年，但她依然保持着年轻的外貌。", text3: "Trẻ trung  - 年轻", audioFile: "201-300.mp3" },
+{ start: 120.573356, end: 123.498844, text: "Ông ấy đã già nua và cần được chăm sóc đặc biệt.", text2: "他已经年迈，需要特别的照顾。", text3: "Già nua  - 年迈", audioFile: "201-300.mp3" },
+{ start: 123.991088, end: 126.806327, text: "Cô ấy xuất hiện với vẻ ngoài quý phái tại bữa tiệc.", text2: "她在宴会上显得非常高贵。", text3: "Quý phái  - 高贵", audioFile: "201-300.mp3" },
+{ start: 127.258481, end: 130.815397, text: "Hắn ta là một kẻ bần tiện, luôn tìm cách lợi dụng người khác.", text2: "他是一个卑鄙的人，总是想利用别人。", text3: "Bần tiện  - 卑鄙", audioFile: "201-300.mp3" },
+{ start: 131.277574, end: 134.152948, text: "Cô bé luôn vui tươi và nở nụ cười trên môi.", text2: "这个女孩总是欢快，脸上挂着笑容。", text3: "Vui tươi  - 欢快", audioFile: "201-300.mp3" },
+{ start: 134.615125, end: 137.640839, text: "Anh ấy trở nên trầm buồn sau khi chia tay bạn gái.", text2: "和女友分手后，他变得非常忧郁。", text3: "Trầm buồn  - 忧郁", audioFile: "201-300.mp3" },
+{ start: 138.092993, end: 141.38932, text: "Con chó này trông rất hung tợn và không thân thiện với người lạ.", text2: "这只狗看起来很凶恶，不友善对待陌生人。", text3: "Hung tợn  - 凶恶", audioFile: "201-300.mp3" },
+{ start: 141.851497, end: 144.335986, text: "Cô ấy luôn yêu thương gia đình mình vô điều kiện.", text2: "她总是无条件地爱着她的家人。", text3: "Yêu thương  - 爱", audioFile: "201-300.mp3" },
+{ start: 144.778118, end: 147.322744, text: "Anh ấy cảm thấy ghét bỏ những người không trung thực.", text2: "他对那些不诚实的人感到厌恶。", text3: "Ghét bỏ  - 厌恶", audioFile: "201-300.mp3" },
+{ start: 147.774898, end: 150.459841, text: "Cậu bé rất lười biếng và không muốn làm bài tập.", text2: "这个男孩非常懒惰，不想做作业。", text3: "Lười biếng  - 懒惰", audioFile: "201-300.mp3" },
+{ start: 150.922018, end: 153.797392, text: "Cô ấy kiểm tra từng chi tiết một cách kỹ càng.", text2: "她仔细检查每一个细节。", text3: "Kỹ càng  - 仔细", audioFile: "201-300.mp3" },
+{ start: 154.229501, end: 157.565918, text: "Anh ấy làm việc rất qua loa, không chú ý đến kết quả.", text2: "他的工作非常马虎，不注重结果。", text3: "Qua loa  - 马虎", audioFile: "201-300.mp3" },
+{ start: 158.028095, end: 161.003696, text: "Cô ấy đã chuẩn bị mọi thứ rất chu đáo cho bữa tiệc.", text2: "她为宴会准备得非常周到。", text3: "Chu đáo  - 周到", audioFile: "201-300.mp3" },
+{ start: 161.465873, end: 164.170862, text: "Hai bên có quan điểm hoàn toàn đối nghịch nhau.", text2: "双方的观点完全对立。", text3: "Đối nghịch  - 对立", audioFile: "201-300.mp3" },
+{ start: 164.623016, end: 168.159887, text: "Ông ấy là một giáo viên tận tâm và luôn quan tâm đến học sinh.", text2: "他是一位尽心的老师，总是关心学生。", text3: "Tận tâm  - 尽心", audioFile: "201-300.mp3" },
+{ start: 168.622063, end: 170.976259, text: "Anh ấy bị chỉ trích vì bỏ bê công việc.", text2: "他因忽视工作而受到批评。", text3: "Bỏ bê  - 忽视", audioFile: "201-300.mp3" },
+{ start: 171.438435, end: 174.554354, text: "Họ dành cho nhau những nụ hôn nồng nàn dưới ánh trăng.", text2: "他们在月光下热烈地亲吻。", text3: "Nồng nàn  - 热烈", audioFile: "201-300.mp3" },
+{ start: 175.026553, end: 177.601247, text: "Anh ấy thờ ơ trước những khó khăn của người khác.", text2: "他对别人的困难表现得非常冷漠。", text3: "Thờ ơ  - 冷漠", audioFile: "201-300.mp3" },
+{ start: 178.053401, end: 180.918753, text: "Cơn bão này rất hung bạo và gây ra thiệt hại lớn.", text2: "这场风暴非常暴力，造成了巨大的破坏。", text3: "Hung bạo  - 暴力", audioFile: "201-300.mp3" },
+{ start: 181.38093, end: 185.02805, text: "Cô ấy là một người rất năng động và luôn tham gia vào các hoạt động.", text2: "她是一个非常活跃的人，总是参加各种活动。", text3: "Năng động  - 活跃", audioFile: "201-300.mp3" },
+{ start: 185.460159, end: 188.375624, text: "Cây cầu đã bị bỏ hoang và bất động trong nhiều năm.", text2: "这座桥被废弃多年，静止不动。", text3: "Bất động  - 静止", audioFile: "201-300.mp3" },
+{ start: 188.8378, end: 192.274444, text: "Anh ấy có khả năng nhận biết sắc bén trong việc giải quyết vấn đề.", text2: "他在解决问题方面有敏锐的洞察力。", text3: "Sắc bén  - 敏锐", audioFile: "201-300.mp3" },
+{ start: 192.786735, end: 195.832494, text: "Cô ấy rất lì lợm và không dễ dàng thay đổi ý kiến.", text2: "她非常顽固，不轻易改变意见。", text3: "Lì lợm  - 顽固", audioFile: "201-300.mp3" },
+{ start: 196.264603, end: 199.390544, text: "Anh ấy tỏ ra lãnh đạm trước sự nhiệt tình của bạn bè.", text2: "他对朋友的热情表现得很冷淡。", text3: "Lãnh đạm  - 冷淡", audioFile: "201-300.mp3" },
+{ start: 199.842698, end: 203.369546, text: "Cô ấy luôn khao khát một cuộc sống tự do và không bị ràng buộc.", text2: "她一直渴望自由、不受束缚的生活。", text3: "Tự do  - 自由", audioFile: "201-300.mp3" },
+{ start: 203.821701, end: 206.747188, text: "Quy tắc này ràng buộc mọi người phải tuân thủ nghiêm ngặt.", text2: "这项规则约束了所有人必须严格遵守。", text3: "Ràng buộc  - 约束", audioFile: "201-300.mp3" },
+{ start: 207.209365, end: 210.465601, text: "Cô ấy sống một cuộc sống độc lập từ khi tốt nghiệp đại học.", text2: "她从大学毕业后一直过着独立的生活。", text3: "Độc lập  - 独立", audioFile: "201-300.mp3" },
+{ start: 210.917755, end: 213.27195, text: "Anh ấy không muốn phụ thuộc vào bất kỳ ai.", text2: "他不想依赖任何人。", text3: "Phụ thuộc  - 依赖", audioFile: "201-300.mp3" },
+{ start: 213.724104, end: 216.910181, text: "Gia đình cô ấy sống trong hòa hợp và yêu thương lẫn nhau.", text2: "她的家庭生活和谐，彼此相爱。", text3: "Hòa hợp  - 和谐", audioFile: "201-300.mp3" },
+{ start: 217.372358, end: 219.836803, text: "Cuộc thi này được tổ chức một cách công bằng.", text2: "这场比赛是公平举行的。", text3: "Công bằng  - 公平", audioFile: "201-300.mp3" },
+{ start: 220.29898, end: 223.264558, text: "Anh ấy bị buộc tội thiên vị trong việc phân chia tài sản.", text2: "他被指控在财产分配中偏袒一方。", text3: "Thiên vị  - 偏袒", audioFile: "201-300.mp3" },
+{ start: 223.756803, end: 226.582063, text: "Món salad này rất tươi mới và ngon miệng.", text2: "这道沙拉非常新鲜、美味。", text3: "Tươi mới  - 新鲜", audioFile: "201-300.mp3" },
+{ start: 227.04424, end: 230.009819, text: "Da của cô ấy bắt đầu lão hóa sau tuổi 40.", text2: "她的皮肤在40岁以后开始老化。", text3: "Lão hóa  - 老化", audioFile: "201-300.mp3" },
+{ start: 230.482018, end: 234.028912, text: "Họ đã vượt qua những năm tháng gian khó để đạt được thành công.", text2: "他们克服了艰难的岁月，终于取得了成功。", text3: "Gian khó  - 艰难", audioFile: "201-300.mp3" },
+{ start: 234.481066, end: 237.546871, text: "Anh ấy là một người rất phóng khoáng và không ngại chia sẻ.", text2: "他是一个非常大方的人，从不吝啬分享。", text3: "Phóng khoáng  - 大方", audioFile: "201-300.mp3" },
+{ start: 238.039116, end: 242.047052, text: "Cô ấy bị chỉ trích vì tính cách ki bo và không chia sẻ với người khác.", text2: "她因为性格小气、不愿意与他人分享而受到批评。", text3: "Ki bo  - 小气 ，吝啬", audioFile: "201-300.mp3" },
+{ start: 242.479161, end: 244.913537, text: "Cô bé e dè khi tiếp xúc với người lạ.", text2: "这个女孩在与陌生人接触时显得很害羞。", text3: "E dè  - 害羞", audioFile: "201-300.mp3" },
+{ start: 245.365692, end: 247.940385, text: "Cô ấy rất hài lòng với kết quả thi của mình.", text2: "她对自己的考试成绩非常满意。", text3: "Hài lòng  - 满意", audioFile: "201-300.mp3" },
+{ start: 248.39254, end: 251.77907, text: "Nhân viên trong công ty tỏ ra bất mãn với chính sách mới.", text2: "公司员工对新政策表示不满。", text3: "Bất mãn  - 不满", audioFile: "201-300.mp3" },
+{ start: 252.211179, end: 255.818209, text: "Anh ấy luôn yêu đời và tìm thấy niềm vui trong những điều nhỏ nhặt.", text2: "他总是乐观，能在小事中找到快乐。", text3: "Yêu đời  - 乐观", audioFile: "201-300.mp3" },
+{ start: 256.280385, end: 259.326145, text: "Sau nhiều lần thất bại, cô ấy trở nên chán đời.", text2: "经历了多次失败后，她变得厌世。", text3: "Chán đời  - 厌世", audioFile: "201-300.mp3" },
+{ start: 259.798345, end: 263.265057, text: "Cô ấy là một người rất nhân ái, luôn giúp đỡ người nghèo.", text2: "她是一个非常仁爱的人，总是帮助穷人。", text3: "Nhân ái  - 仁爱", audioFile: "201-300.mp3" },
+{ start: 263.707188, end: 267.775261, text: "Anh ấy bị chỉ trích là người vô tâm khi không quan tâm đến cảm xúc của người khác.", text2: "他因为对别人的感受不关心而被指责为无情。", text3: "Vô tâm  - 无情", audioFile: "201-300.mp3" },
+{ start: 268.237438, end: 272.00483, text: "Bà ấy rất nhân hậu và luôn tham gia vào các hoạt động từ thiện.", text2: "她非常慈善，总是参加慈善活动。", text3: "Nhân hậu  - 慈善", audioFile: "201-300.mp3" },
+{ start: 272.467007, end: 276.815714, text: "Hành động của hắn ta xuất phát từ ác ý và muốn gây tổn thương cho người khác.", text2: "他的行为出于恶意，想要伤害他人。", text3: "Ác ý  - 恶意", audioFile: "201-300.mp3" },
+{ start: 277.2378, end: 281.396077, text: "Anh ấy là một học sinh tinh anh, luôn đạt thành tích cao trong học tập.", text2: "他是一个精英学生，总是在学习中取得优异成绩。", text3: "Tinh anh  - 精英", audioFile: "201-300.mp3" },
+{ start: 281.848231, end: 285.274853, text: "Hắn ta bị coi là đần độn vì không hiểu những điều cơ bản.", text2: "他被认为是愚钝，因为连基本的事情都不懂。", text3: "Đần độn  - 愚钝", audioFile: "201-300.mp3" },
+{ start: 285.696939, end: 288.221519, text: "Cậu bé tuy khờ khạo nhưng lại rất thật thà.", text2: "这个男孩虽然愚笨，但非常诚实。", text3: "Khờ khạo  - 愚笨", audioFile: "201-300.mp3" },
+{ start: 288.663651, end: 292.050181, text: "Cô ấy luôn giữ vững lập trường kiên định trong mọi hoàn cảnh.", text2: "她在任何情况下都保持坚定的立场。", text3: "Kiên định  - 坚定", audioFile: "201-300.mp3" },
+{ start: 292.492313, end: 295.918934, text: "Lòng tin của anh ấy đã bắt đầu lung lay sau những lần thất bại.", text2: "在多次失败后，他的信心开始动摇。", text3: "Lung lay  - 动摇", audioFile: "201-300.mp3" },
+{ start: 296.351043, end: 299.587234, text: "Cây cầu này rất vững chắc và có thể chịu được trọng tải lớn.", text2: "这座桥非常坚固，能承受巨大的负荷。", text3: "Vững chắc  - 坚固", audioFile: "201-300.mp3" },
+{ start: 300.039388, end: 303.235488, text: "Chiếc ghế này rất bấp bênh, không an toàn để ngồi.", text2: "这张椅子很摇摆，不安全。", text3: "Bấp bênh  - 摇摆", audioFile: "201-300.mp3" },
+{ start: 303.707687, end: 306.512902, text: "Cô bé được mọi người yêu mến vì tính cách hiền lành.", text2: "这个女孩因为性格温和而受到大家的喜爱。", text3: "Yêu mến  - 喜爱", audioFile: "201-300.mp3" },
+{ start: 306.965057, end: 309.680068, text: "Anh ấy khinh thường những người không có ý chí phấn đấu.", text2: "他轻视那些没有奋斗精神的人。", text3: "Khinh thường  - 轻视", audioFile: "201-300.mp3" },
+{ start: 310.152268, end: 313.729229, text: "Bầu trời đêm thật bao la với hàng triệu vì sao lấp lánh.", text2: "夜空非常广阔，星星点点。", text3: "Bao la  - 广阔", audioFile: "201-300.mp3" },
+{ start: 314.231497, end: 317.818481, text: "Hầm mỏ này rất tối tăm và cần sử dụng đèn để di chuyển.", text2: "这个矿井非常黑暗，需要用灯来移动。", text3: "Tối tăm  - 黑暗", audioFile: "201-300.mp3" },
+{ start: 318.270635, end: 321.135986, text: "Trái cây trên cây đã chín đầy đặn và thơm ngon.", text2: "树上的水果已经成熟丰满，非常美味。", text3: "Đầy đặn  - 丰满", audioFile: "201-300.mp3" },
+{ start: 321.588141, end: 324.012494, text: "Cậu bé rất gầy gò do thiếu dinh dưỡng.", text2: "由于缺乏营养，这个男孩非常瘦弱。", text3: "Gầy gò  - 瘦弱", audioFile: "201-300.mp3" },
+{ start: 324.43458, end: 327.500385, text: "Ánh đèn sân khấu chói lòa khiến cô ấy phải nhắm mắt.", text2: "舞台灯光耀眼，让她不得不闭上眼睛。", text3: "Chói lòa  - 耀眼", audioFile: "201-300.mp3" },
+{ start: 327.972585, end: 331.03839, text: "Bộ phim này khá nhạt nhẽo và không có gì thú vị.", text2: "这部电影非常枯燥，没有什么有趣的地方。", text3: "Nhạt nhẽo  - 枯燥", audioFile: "201-300.mp3" },
+{ start: 331.480522, end: 334.03517, text: "Ánh mắt của cô ấy thật sâu thẳm và bí ẩn.", text2: "她的眼神非常深邃且神秘。", text3: "Sâu thẳm  - 深邃", audioFile: "201-300.mp3" },
+{ start: 334.497347, end: 337.813719, text: "Những bông hoa trong vườn nở rất tươi tắn và rực rỡ.", text2: "花园里的花朵盛开得非常鲜艳。", text3: "Tươi tắn  - 鲜艳", audioFile: "201-300.mp3" },
+{ start: 338.326009, end: 342.173583, text: "Hoa trong bình đã bắt đầu héo úa sau một tuần không được thay nước.", text2: "花瓶里的花因为一周没有换水而开始枯萎。", text3: "Héo úa  - 枯萎", audioFile: "201-300.mp3" },
+{ start: 342.625737, end: 345.190408, text: "Chiếc xe mới được rửa sạch trông rất bóng bẩy.", text2: "新洗的车看起来非常光滑。", text3: "Bóng bẩy  - 光滑", audioFile: "201-300.mp3" },
+{ start: 345.652585, end: 348.878753, text: "Bề mặt của đá này rất xù xì và khó chạm vào.", text2: "这块石头的表面非常粗糙，不易触摸。", text3: "Xù xì  - 粗糙", audioFile: "201-300.mp3" },
+{ start: 349.34093, end: 352.527007, text: "Cô ấy di chuyển với những bước chân thanh thoát như vũ công.", text2: "她的步伐轻盈，像个舞者。", text3: "Thanh thoát  - 轻盈", audioFile: "201-300.mp3" },
+{ start: 352.969138, end: 356.746553, text: "Anh ấy bước đi với những bước chân nặng nề sau ngày làm việc mệt mỏi.", text2: "他在劳累了一天后，步伐沉重。", text3: "Nặng nề  - 沉重", audioFile: "201-300.mp3" },
+{ start: 0, end: 2.655442, text: "Tấm lòng thanh cao của bà ấy khiến mọi người kính phục.", text2: "她的高尚品格让人敬佩。", text3: "Thanh cao  - 高尚", audioFile: "301-400.mp3" },
+{ start: 3.097574, end: 6.524195, text: "Hắn ta sử dụng những thủ đoạn thấp hèn để đạt được mục đích.", text2: "他用卑鄙的手段达到目的。", text3: "Thấp hèn  - 卑鄙", audioFile: "301-400.mp3" },
+{ start: 6.966327, end: 9.841701, text: "Ngôi đền cổ này luôn mang đến cảm giác huyền bí.", text2: "这座古庙总是带给人神秘的感觉。", text3: "Huyền bí  - 神秘", audioFile: "301-400.mp3" },
+{ start: 10.3139, end: 13.069002, text: "Những dấu hiệu trên đường rất rõ ràng và dễ hiểu.", text2: "路上的标志非常明显，容易理解。", text3: "Rõ ràng  - 明显", audioFile: "301-400.mp3" },
+{ start: 13.541202, end: 17.228413, text: "Cô ấy có một nụ cười quyến rũ khiến mọi người xung quanh mê mẩn.", text2: "她的笑容非常迷人，让周围的人都被吸引。", text3: "Quyến rũ  - 迷人", audioFile: "301-400.mp3" },
+{ start: 17.700612, end: 21.207415, text: "Hắn ta có một tâm hồn xấu xí, luôn làm hại người khác.", text2: "他的心灵非常丑陋，总是伤害别人。", text3: "Xấu xí  - 丑陋", audioFile: "301-400.mp3" },
+{ start: 21.659569, end: 24.63517, text: "Cung điện hoàng gia tráng lệ với kiến trúc nguy nga.", text2: "皇家宫殿以其壮丽的建筑闻名。", text3: "Tráng lệ  - 壮丽", audioFile: "301-400.mp3" },
+{ start: 25.087324, end: 28.60415, text: "Cô ấy chọn một cuộc sống bình dị, xa lánh sự xa hoa.", text2: "她选择了一个朴素的生活，远离奢华。", text3: "Bình dị  - 朴素", audioFile: "301-400.mp3" },
+{ start: 29.046281, end: 31.731224, text: "Tòa lâu đài uy nghi đứng vững giữa thung lũng.", text2: "城堡在山谷中威严矗立。", text3: "Uy nghi  - 威严", audioFile: "301-400.mp3" },
+{ start: 32.153311, end: 35.620023, text: "Kết quả học tập của anh ấy yếu kém so với các bạn cùng lớp.", text2: "他的学习成绩比班上的同学差劲。", text3: "Yếu kém  - 差劲", audioFile: "301-400.mp3" },
+{ start: 36.102245, end: 39.368503, text: "Cô ấy đã đạt thành tích xuất sắc trong kỳ thi vừa qua.", text2: "她在最近的考试中取得了优秀的成绩。", text3: "Xuất sắc  - 优秀", audioFile: "301-400.mp3" },
+{ start: 39.810635, end: 42.385329, text: "Cánh hoa mong manh dễ bị gió cuốn đi.", text2: "花瓣脆弱，容易被风吹走。", text3: "Mong manh  - 脆弱", audioFile: "301-400.mp3" },
+{ start: 42.867551, end: 46.28415, text: "Quân đội của quốc gia này rất hùng mạnh và được trang bị hiện đại.", text2: "这个国家的军队非常强大，装备先进。", text3: "Hùng mạnh  - 强大", audioFile: "301-400.mp3" },
+{ start: 46.79644, end: 49.912358, text: "Phát triển bền vững là mục tiêu dài hạn của công ty.", text2: "可持续发展是公司的长期目标。", text3: "Bền vững  - 可持续", audioFile: "301-400.mp3" },
+{ start: 50.404603, end: 53.119615, text: "Họ chỉ đưa ra quyết định tạm thời trong cuộc họp.", text2: "他们在会议上只做了临时决定。", text3: "Tạm thời  - 临时", audioFile: "301-400.mp3" },
+{ start: 53.561746, end: 57.058526, text: "Quyết định này sẽ có ảnh hưởng vĩnh viễn đến tương lai của họ.", text2: "这个决定将对他们的未来产生永久影响。", text3: "Vĩnh viễn  - 永久", audioFile: "301-400.mp3" },
+{ start: 57.51068, end: 60.837075, text: "Con chó của anh ấy rất chung thủy và luôn bảo vệ chủ nhân.", text2: "他的狗非常忠诚，总是保护主人。", text3: "Chung thủy  - 忠诚", audioFile: "301-400.mp3" },
+{ start: 61.309274, end: 64.545465, text: "Anh ấy bị chỉ trích vì thói lăng nhăng và không chung thủy.", text2: "他因花心和不忠而受到批评。", text3: "Lăng nhăng  - 花心", audioFile: "301-400.mp3" },
+{ start: 65.027687, end: 68.303968, text: "Cô ấy bị phát hiện là người giả dối sau nhiều lần lừa đảo.", text2: "她在多次欺诈后被发现是个虚伪的人。", text3: "Giả dối  - 虚伪", audioFile: "301-400.mp3" },
+{ start: 68.756122, end: 71.731723, text: "Anh ấy luôn tỏ ra kiêu ngạo và coi thường người khác.", text2: "他总是表现得很傲慢，看不起别人。", text3: "Kiêu ngạo  - 傲慢", audioFile: "301-400.mp3" },
+{ start: 72.15381, end: 75.881111, text: "Cô ấy rất khiêm tốn và luôn tránh khoe khoang về thành tựu của mình.", text2: "她非常谦虚，总是避免炫耀自己的成就。", text3: "Khiêm tốn  - 谦虚", audioFile: "301-400.mp3" },
+{ start: 76.363333, end: 79.258753, text: "Anh ấy tỏ ra dè dặt khi gặp gỡ những người mới.", text2: "他在与新朋友见面时显得很拘谨。", text3: "Dè dặt  - 拘谨", audioFile: "301-400.mp3" },
+{ start: 79.710907, end: 82.315669, text: "Cô ấy luôn thận trọng trong mọi quyết định của mình.", text2: "她在做每一个决定时都非常小心。", text3: "Thận trọng  - 小心", audioFile: "301-400.mp3" },
+{ start: 82.7578, end: 85.35254, text: "Anh ấy đã bất cẩn làm đổ nước lên bàn phím.", text2: "他不谨慎，把水洒在了键盘上。", text3: "Bất cẩn  - 不谨慎", audioFile: "301-400.mp3" },
+{ start: 85.804694, end: 88.80034, text: "Hãy cẩn thận khi xử lý những tài liệu quan trọng này.", text2: "处理这些重要文件时请仔细。", text3: "Cẩn thận  - 仔细", audioFile: "301-400.mp3" },
+{ start: 89.27254, end: 91.726961, text: "Quan điểm của họ hoàn toàn trái ngược nhau.", text2: "他们的观点完全相反。", text3: "Trái ngược  - 相反", audioFile: "301-400.mp3" },
+{ start: 92.15907, end: 95.545601, text: "Cô ấy có cơ thể dẻo dai nhờ tập luyện yoga thường xuyên.", text2: "她通过经常练习瑜伽保持了灵活的身体。", text3: "Dẻo dai  - 灵活", audioFile: "301-400.mp3" },
+{ start: 96.007778, end: 98.402063, text: "Anh ấy hành xử thô bạo trong cuộc tranh cãi.", text2: "他在争论中表现得非常粗暴。", text3: "Thô bạo  - 粗暴", audioFile: "301-400.mp3" },
+{ start: 98.844195, end: 102.631633, text: "Thiết kế này quá thô thiển, thiếu đi sự tinh tế cần có.", text2: "这个设计太粗糙，缺乏所需的精致感。", text3: "Thô thiển  - 粗糙", audioFile: "301-400.mp3" },
+{ start: 103.083787, end: 106.239796, text: "Tâm trạng của anh ấy trở nên u tối sau khi nghe tin xấu.", text2: "听到坏消息后，他的心情变得阴暗。", text3: "U tối  - 阴暗", audioFile: "301-400.mp3" },
+{ start: 106.711995, end: 110.29898, text: "Bên cạnh gia đình, cô ấy luôn cảm thấy ấm áp và hạnh phúc.", text2: "在家人身边，她总是感到温暖和幸福。", text3: "Ấm áp  - 温暖", audioFile: "301-400.mp3" },
+{ start: 110.781202, end: 113.345873, text: "Căn phòng trở nên lạnh lẽo khi mùa đông đến.", text2: "冬天来临时，房间变得寒冷。", text3: "Lạnh lẽo  - 寒冷", audioFile: "301-400.mp3" },
+{ start: 113.788005, end: 116.623288, text: "Buổi sáng trên núi rất mát mẻ và dễ chịu.", text2: "山上的早晨非常凉爽、舒适。", text3: "Mát mẻ  - 凉爽", audioFile: "301-400.mp3" },
+{ start: 117.085465, end: 120.5622, text: "Mùa hè ở đây rất nóng bức, cần phải sử dụng điều hòa.", text2: "这里的夏天非常炎热，需要使用空调。", text3: "Nóng bức  - 炎热", audioFile: "301-400.mp3" },
+{ start: 121.014354, end: 124.040068, text: "Cảnh hoàng hôn trên biển thật đẹp đẽ và thơ mộng.", text2: "海上的日落非常美丽和梦幻。", text3: "Đẹp đẽ  - 美丽", audioFile: "301-400.mp3" },
+{ start: 124.512268, end: 126.906553, text: "Cô ấy luôn hành động với tấm lòng tốt lành.", text2: "她总是以善良的心行事。", text3: "Tốt lành  - 善良", audioFile: "301-400.mp3" },
+{ start: 127.348685, end: 130.514717, text: "Anh ấy bị phát hiện có hành vi lừa lọc trong kinh doanh.", text2: "他在生意中被发现有欺骗行为。", text3: "Lừa lọc  - 欺骗", audioFile: "301-400.mp3" },
+{ start: 130.946825, end: 134.032676, text: "Ông ấy luôn đưa ra những quyết định khôn ngoan và sáng suốt.", text2: "他总是做出明智和清晰的决定。", text3: "Khôn ngoan  - 明智", audioFile: "301-400.mp3" },
+{ start: 134.514898, end: 138.182063, text: "Dù gặp tình huống khó khăn, cô ấy vẫn giữ được sự bình tĩnh.", text2: "即使遇到困难，她依然保持冷静。", text3: "Bình tĩnh  - 冷静", audioFile: "301-400.mp3" },
+{ start: 138.60415, end: 141.679977, text: "Anh ấy thường xuyên hành động hấp tấp mà không suy nghĩ kỹ.", text2: "他经常急躁行事，不仔细考虑。", text3: "Hấp tấp  - 急躁", audioFile: "301-400.mp3" },
+{ start: 142.1622, end: 145.328231, text: "Bức tranh đã trở nên mờ nhạt sau nhiều năm bị phơi nắng.", text2: "这幅画经过多年暴晒后变得暗淡。", text3: "Mờ nhạt  - 暗淡", audioFile: "301-400.mp3" },
+{ start: 145.810454, end: 149.347324, text: "Hình ảnh trên tấm ảnh cũ trở nên nhạt nhòa theo thời gian.", text2: "旧照片上的图像随着时间的推移变得淡了。", text3: "Nhạt nhòa  - 淡", audioFile: "301-400.mp3" },
+{ start: 149.779433, end: 153.276213, text: "Căn phòng được sơn màu tươi sáng, tạo cảm giác vui vẻ.", text2: "房间被刷成了明亮的颜色，给人一种快乐的感觉。", text3: "Tươi sáng  - 明亮", audioFile: "301-400.mp3" },
+{ start: 153.798526, end: 156.724014, text: "Khu rừng trở nên âm u khi mây đen kéo đến.", text2: "乌云密布时，森林变得阴森。", text3: "Âm u  - 阴森", audioFile: "301-400.mp3" },
+{ start: 157.156122, end: 159.269773, text: "Cậu bé lười nhác không chịu học hành.", text2: "这个男孩很懒惰，不愿意学习。", text3: "Lười nhác  - 懒惰", audioFile: "301-400.mp3" },
+{ start: 159.711905, end: 162.867914, text: "Buổi sáng sớm ở đây rất tươi mát và sảng khoái.", text2: "这里的早晨非常清新和舒爽。", text3: "Tươi mát  - 清新", audioFile: "301-400.mp3" },
+{ start: 163.320068, end: 166.395896, text: "Nội dung của bài giảng này khá khô khan và khó hiểu.", text2: "这次讲座的内容非常干燥，难以理解。", text3: "Khô khan  - 干燥", audioFile: "301-400.mp3" },
+{ start: 166.878118, end: 169.432766, text: "Ngôi làng nằm giữa đồng cỏ thanh bình và yên ả.", text2: "村庄坐落在宁静的草原中。", text3: "Thanh bình  - 宁静", audioFile: "301-400.mp3" },
+{ start: 169.884921, end: 173.111088, text: "Đường phố trở nên náo loạn khi đám đông bắt đầu biểu tình.", text2: "当人群开始抗议时，街道变得喧闹。", text3: "Náo loạn  - 喧闹", audioFile: "301-400.mp3" },
+{ start: 173.583288, end: 176.619025, text: "Cách giải quyết vấn đề này rất đơn giản và hiệu quả.", text2: "解决这个问题的方法非常简单且有效。", text3: "Đơn giản  - 简单", audioFile: "301-400.mp3" },
+{ start: 177.061156, end: 180.096893, text: "Anh ấy luôn bày tỏ cảm xúc của mình một cách chân thành.", text2: "他总是真诚地表达自己的感受。", text3: "Chân thành  - 真诚", audioFile: "301-400.mp3" },
+{ start: 180.589138, end: 183.935578, text: "Cô ấy có tính cách hài hước, luôn khiến mọi người cười.", text2: "她的性格非常幽默，总是让人发笑。", text3: "Hài hước  - 幽默", audioFile: "301-400.mp3" },
+{ start: 184.367687, end: 187.864467, text: "Ông ấy là một người rất tử tế, luôn giúp đỡ người khác.", text2: "他是一个非常善良的人，总是帮助别人。", text3: "Tử tế  - 善良", audioFile: "301-400.mp3" },
+{ start: 188.306599, end: 190.931406, text: "Hắn ta tỏ ra tàn nhẫn với những kẻ thù của mình.", text2: "他对自己的敌人非常残忍。", text3: "Tàn nhẫn  - 残忍", audioFile: "301-400.mp3" },
+{ start: 191.38356, end: 194.529546, text: "Cô ấy luôn tận tình hỗ trợ bạn bè trong lúc khó khăn.", text2: "她总是在朋友遇到困难时热心地支持他们。", text3: "Tận tình  - 热心", audioFile: "301-400.mp3" },
+{ start: 194.981701, end: 197.416077, text: "Anh ấy hờ hững trước những nỗ lực của đồng nghiệp.", text2: "他对同事的努力漠不关心。", text3: "Hờ hững  - 漠不关心", audioFile: "301-400.mp3" },
+{ start: 197.928367, end: 200.42288, text: "Cô ấy luôn quý trọng từng giây phút bên gia đình.", text2: "她总是珍惜和家人在一起的每一刻。", text3: "Quý trọng  - 珍惜", audioFile: "301-400.mp3" },
+{ start: 200.885057, end: 203.670227, text: "Anh ấy cảm thấy bị ép buộc phải làm việc mình không thích.", text2: "他感到被强迫去做他不喜欢的事情。", text3: "Ép buộc  - 强迫", audioFile: "301-400.mp3" },
+{ start: 204.162472, end: 207.057891, text: "Cô ấy không muốn dựa dẫm vào người khác trong cuộc sống.", text2: "她不想在生活中依赖别人。", text3: "Dựa dẫm  - 依赖", audioFile: "301-400.mp3" },
+{ start: 207.510045, end: 210.736213, text: "Hắn ta bị cáo buộc có hành vi gian trá trong kinh doanh.", text2: "他被指控在生意中有狡诈行为。", text3: "Gian trá  - 狡诈", audioFile: "301-400.mp3" },
+{ start: 211.218435, end: 213.973537, text: "Cậu bé rất biếng nhác và không muốn làm việc nhà.", text2: "这个男孩非常懒惰，不想做家务。", text3: "Biếng nhác  - 懒惰", audioFile: "301-400.mp3" },
+{ start: 214.415669, end: 218.022698, text: "Anh ấy nổi tiếng là người bủn xỉn và không bao giờ chia sẻ với ai.", text2: "他以吝啬著称，从不与他人分享。", text3: "Bủn xỉn  - 吝啬", audioFile: "301-400.mp3" },
+{ start: 218.484875, end: 221.149773, text: "Cô ấy luôn vui vẻ và nở nụ cười trên môi.", text2: "她总是快乐，脸上常带笑容。", text3: "Vui vẻ  - 快乐", audioFile: "301-400.mp3" },
+{ start: 221.631995, end: 224.026281, text: "Anh ấy cảm thấy buồn rầu sau khi mất việc.", text2: "失业后，他感到非常忧愁。", text3: "Buồn rầu  - 忧愁", audioFile: "301-400.mp3" },
+{ start: 224.478435, end: 227.403923, text: "Cô ấy rất khéo léo trong việc thêu thùa và may vá.", text2: "她在刺绣和缝纫方面非常灵巧。", text3: "Khéo léo  - 灵巧", audioFile: "301-400.mp3" },
+{ start: 227.846054, end: 230.300476, text: "Anh ấy rất vụng về trong việc sửa chữa đồ đạc.", text2: "他在修理东西方面非常笨拙。", text3: "Vụng về  - 笨拙", audioFile: "301-400.mp3" },
+{ start: 230.75263, end: 234.199297, text: "Hắn ta bị coi là ngu dốt vì không hiểu những điều cơ bản.", text2: "他因为不了解基本知识而被认为是无知。", text3: "Ngu dốt  - 无知", audioFile: "301-400.mp3" },
+{ start: 234.661474, end: 238.098118, text: "Cô ấy rất nhanh nhẹn trong việc phản ứng với các tình huống khẩn cấp.", text2: "她在应对紧急情况时非常敏捷。", text3: "Nhanh nhẹn  - 敏捷", audioFile: "301-400.mp3" },
+{ start: 238.530227, end: 242.07712, text: "Anh ấy bị tố cáo là bội bạc khi không giữ lời hứa với bạn bè.", text2: "他被指控在没有履行对朋友的承诺时背信。", text3: "Bội bạc  - 背信", audioFile: "301-400.mp3" },
+{ start: 242.579388, end: 246.306689, text: "Bài diễn thuyết của cô ấy đầy hoa mỹ nhưng thiếu nội dung thực tế.", text2: "她的演讲虽然华丽，但缺乏实际内容。", text3: "Hoa mỹ  - 华丽", audioFile: "301-400.mp3" },
+{ start: 246.808957, end: 249.173175, text: "Anh ấy luôn trầm tĩnh trong mọi hoàn cảnh.", text2: "他在任何情况下都表现得很沉静。", text3: "Trầm tĩnh  - 沉静", audioFile: "301-400.mp3" },
+{ start: 249.605283, end: 252.931678, text: "Cô ấy thường xuyên hành động nóng vội mà không suy nghĩ kỹ.", text2: "她经常急躁行事，不仔细考虑。", text3: "Nóng vội  - 急躁", audioFile: "301-400.mp3" },
+{ start: 253.453991, end: 256.87059, text: "Hướng đi của dự án này khá mơ hồ và không rõ ràng.", text2: "这个项目的方向相当模糊，不明确。", text3: "Mơ hồ  - 模糊", audioFile: "301-400.mp3" },
+{ start: 257.362834, end: 260.358481, text: "Anh ấy có thái độ thù địch đối với những người khác quan điểm.", text2: "他对持不同意见的人表现出敌对的态度。", text3: "Thù địch  - 敌对", audioFile: "301-400.mp3" },
+{ start: 260.810635, end: 264.427687, text: "Cô ấy luôn thương yêu con cái của mình và chăm sóc chúng cẩn thận.", text2: "她总是深爱着自己的孩子，细心照顾他们。", text3: "Thương yêu  - 爱", audioFile: "301-400.mp3" },
+{ start: 264.919932, end: 267.73517, text: "Tôi mong muốn gia đình luôn được bình an và hạnh phúc.", text2: "我希望家人永远平安幸福。", text3: "Bình an  - 平安", audioFile: "301-400.mp3" },
+{ start: 268.217392, end: 271.613946, text: "Cuộc họp trở nên hỗn loạn khi không ai chịu lắng nghe người khác.", text2: "当没有人愿意听别人说话时，会议变得混乱。", text3: "Hỗn loạn  - 混乱", audioFile: "301-400.mp3" },
+{ start: 272.076122, end: 275.382472, text: "Cô ấy cảm thấy thanh thản sau khi giải quyết xong mọi vấn đề.", text2: "解决所有问题后，她感到非常安宁。", text3: "Thanh thản  - 安宁", audioFile: "301-400.mp3" },
+{ start: 275.884739, end: 279.12093, text: "Anh ấy tỏ ra bối rối khi không hiểu câu hỏi của giám khảo.", text2: "当他不明白评委的问题时显得困惑。", text3: "Bối rối  - 困惑", audioFile: "301-400.mp3" },
+{ start: 279.613175, end: 282.448458, text: "Thời gian bên gia đình là điều quý báu đối với cô ấy.", text2: "和家人在一起的时间对她来说非常珍贵。", text3: "Quý báu  - 珍贵", audioFile: "301-400.mp3" },
+{ start: 282.880567, end: 286.247052, text: "Cô ấy khá dễ dãi trong việc lựa chọn nhà hàng để ăn tối.", text2: "她在选择晚餐的餐厅时非常随便。", text3: "Dễ dãi  - 随便", audioFile: "301-400.mp3" },
+{ start: 286.719252, end: 289.855215, text: "Đôi tay anh ấy thô ráp sau nhiều năm làm việc nặng nhọc.", text2: "经过多年的体力劳动，他的手变得粗糙。", text3: "Thô ráp  - 粗糙", audioFile: "301-400.mp3" },
+{ start: 290.34746, end: 293.563605, text: "Hắn ta bị cáo buộc có hành vi gian xảo trong thương mại.", text2: "他被指控在商业交易中有狡诈行为。", text3: "Gian xảo  - 狡诈", audioFile: "301-400.mp3" },
+{ start: 294.01576, end: 297.412313, text: "Anh ấy có quyết tâm cao để hoàn thành dự án này đúng hạn.", text2: "他决心按时完成这个项目。", text3: "Quyết tâm  - 决心", audioFile: "301-400.mp3" },
+{ start: 297.884512, end: 301.641882, text: "Cô ấy rất rộng lượng, luôn tha thứ cho lỗi lầm của người khác.", text2: "她非常宽宏，总是原谅别人的错误。", text3: "Rộng lượng  - 宽宏", audioFile: "301-400.mp3" },
+{ start: 302.114082, end: 305.009501, text: "Họ là bạn thân thiết và luôn giúp đỡ lẫn nhau.", text2: "他们是亲密的朋友，总是互相帮助。", text3: "Thân thiết  - 亲密", audioFile: "301-400.mp3" },
+{ start: 305.44161, end: 308.48737, text: "Nụ cười ngọt ngào của cô ấy làm say đắm lòng người.", text2: "她的甜美笑容令人陶醉。", text3: "Ngọt ngào  - 甜美", audioFile: "301-400.mp3" },
+{ start: 308.949546, end: 312.366145, text: "Anh ấy đã trải qua những ngày tháng đắng cay khi không có việc làm.", text2: "他在失业期间经历了苦涩的日子。", text3: "Đắng cay  - 苦涩", audioFile: "301-400.mp3" },
+{ start: 312.828322, end: 316.50551, text: "Hành vi của anh ấy thật khó ưa, khiến người khác khó chịu.", text2: "他的行为令人讨厌，让人不舒服。", text3: "Khó ưa  - 讨厌", audioFile: "301-400.mp3" },
+{ start: 316.97771, end: 320.284059, text: "Cô ấy là một người rất bình thường, không có gì nổi bật.", text2: "她是一个非常普通的人，没有什么特别之处。", text3: "Bình thường  - 普通", audioFile: "301-400.mp3" },
+{ start: 320.756259, end: 324.874444, text: "Buổi biểu diễn của họ thật hoàn mỹ, không có bất kỳ sai sót nào.", text2: "他们的表演非常完美，没有任何错误。", text3: "Hoàn mỹ  - 完美", audioFile: "301-400.mp3" },
+{ start: 325.336621, end: 329.35458, text: "Mặc dù có một số khuyết điểm, sản phẩm này vẫn rất được ưa chuộng.", text2: "尽管有一些缺陷，这款产品仍然非常受欢迎。", text3: "Khuyết điểm  - 缺陷", audioFile: "301-400.mp3" },
+{ start: 329.816757, end: 333.253401, text: "Máy móc này rất tinh vi và đòi hỏi sự điều khiển chính xác.", text2: "这台机器非常精细，需要精确操作。", text3: "Tinh vi  - 精细", audioFile: "301-400.mp3" },
+{ start: 333.68551, end: 337.18229, text: "Thiết kế thô sơ của căn nhà này khiến nó không được an toàn.", text2: "这座房子的简陋设计使它不太安全。", text3: "Thô sơ  - 简陋", audioFile: "301-400.mp3" },
+{ start: 337.634444, end: 342.063333, text: "Cô ấy là một nhân viên rất năng nổ, luôn sẵn sàng nhận nhiệm vụ mới.", text2: "她是一个非常积极的员工，总是准备接受新任务。", text3: "Năng nổ  - 积极", audioFile: "301-400.mp3" },
+{ start: 342.48542, end: 345.290635, text: "Cậu bé rất hòa đồng và dễ kết bạn với mọi người.", text2: "这个男孩非常合群，容易交朋友。", text3: "Hòa đồng  - 合群", audioFile: "301-400.mp3" },
+{ start: 345.78288, end: 348.698345, text: "Anh ấy thích sống tách biệt và ít giao tiếp với người khác.", text2: "他喜欢过孤独的生活，很少与人交往。", text3: "Tách biệt  - 孤立, 孤独", audioFile: "301-400.mp3" },
+{ start: 349.130454, end: 351.815397, text: "Ngôi làng yên bình nằm giữa cánh đồng xanh tươi.", text2: "平静的村庄坐落在绿色的田野之间。", text3: "Yên bình  - 平静", audioFile: "301-400.mp3" },
+{ start: 352.277574, end: 356.145193, text: "Sau cơn bão, cây cầu bị hư hỏng và lảo đảo khi đi qua.", text2: "暴风雨过后，桥梁受损，行人通过时摇晃。", text3: "Lảo đảo  - 摇晃", audioFile: "301-400.mp3" },
+{ start: 356.627415, end: 359.84356, text: "Họ đã công khai thông tin về dự án mới với mọi người.", text2: "他们已公开新项目的信息给大家。", text3: "Công khai  - 公开", audioFile: "301-400.mp3" },
+{ start: 0, end: 2.525147, text: "Cô ấy giữ bí mật không tiết lộ với bất kỳ ai.", text2: "她保守秘密，没有告诉任何人。", text3: "Bí mật  - 秘密", audioFile: "401-500.mp3" },
+{ start: 3.017392, end: 6.323741, text: "Hắn ta bị buộc tội có hành vi gian manh trong việc làm ăn.", text2: "他因在生意中的狡诈行为而被指控。", text3: "Gian manh  - 狡诈", audioFile: "401-500.mp3" },
+{ start: 6.765873, end: 10.733719, text: "Ông ấy là một người lãnh đạo tận tụy, luôn đặt công việc lên hàng đầu.", text2: "他是一位敬业的领导，总是把工作放在首位。", text3: "Tận tụy  - 敬业", audioFile: "401-500.mp3" },
+{ start: 11.195896, end: 14.281746, text: "Hành vi của hắn ta cho thấy rõ ác tâm đối với đồng nghiệp.", text2: "他的行为明显表现出对同事的恶意。", text3: "Ác tâm  - 恶意", audioFile: "401-500.mp3" },
+{ start: 14.7339, end: 18.130454, text: "Cô ấy rất dễ gần, luôn lắng nghe và thấu hiểu người khác.", text2: "她非常亲近，总是倾听和理解他人。", text3: "Dễ gần  - 亲近", audioFile: "401-500.mp3" },
+{ start: 18.59263, end: 22.269819, text: "Gia đình cô ấy luôn sống trong hòa thuận và yêu thương lẫn nhau.", text2: "她的家庭总是生活在和睦与相爱中。", text3: "Hòa thuận  - 和睦", audioFile: "401-500.mp3" },
+{ start: 22.752041, end: 25.487098, text: "Giữa hai anh em xảy ra sự bất hòa từ lâu.", text2: "两兄弟之间早已发生不和。", text3: "Bất hòa  - 不和", audioFile: "401-500.mp3" },
+{ start: 25.949274, end: 28.513946, text: "Cô ấy đã chào đón khách bằng thái độ nồng hậu.", text2: "她以热情的态度欢迎客人。", text3: "Nồng hậu  - 热情", audioFile: "401-500.mp3" },
+{ start: 28.976122, end: 32.20229, text: "Anh ấy lưỡng lự không biết có nên nhận công việc này hay không.", text2: "他犹豫是否应该接受这份工作。", text3: "Lưỡng lự  - 犹豫", audioFile: "401-500.mp3" },
+{ start: 32.644422, end: 35.209093, text: "Ông ấy rất tinh thông trong lĩnh vực tài chính.", text2: "他在金融领域非常精通。", text3: "Tinh thông  - 精通", audioFile: "401-500.mp3" },
+{ start: 35.651224, end: 39.047778, text: "Thị trường chứng khoán đang chao đảo do tin tức không ổn định.", text2: "由于不稳定的消息，股市正在动荡。", text3: "Chao đảo  - 动荡", audioFile: "401-500.mp3" },
+{ start: 39.499932, end: 42.355261, text: "Những bông hoa trong vườn đã héo tàn do thiếu nước.", text2: "因为缺水，花园里的花已经枯萎。", text3: "Héo tàn  - 枯萎", audioFile: "401-500.mp3" },
+{ start: 42.78737, end: 45.632676, text: "Căn nhà này đã già cỗi và cần được sửa chữa.", text2: "这座房子已经老朽，需要修缮。", text3: "Già cỗi  - 老朽", audioFile: "401-500.mp3" },
+{ start: 46.08483, end: 49.100522, text: "Cô ấy đã tự chủ trong việc điều hành doanh nghiệp của mình.", text2: "她在经营自己的企业时非常自主。", text3: "Tự chủ  - 自主", audioFile: "401-500.mp3" },
+{ start: 49.552676, end: 52.177483, text: "Anh ấy không muốn lệ thuộc vào gia đình về tài chính.", text2: "他不想在经济上依赖家庭。", text3: "Lệ thuộc  - 依赖", audioFile: "401-500.mp3" },
+{ start: 52.579524, end: 55.705465, text: "Nhà hàng này phục vụ các món ăn bình dân và ngon miệng.", text2: "这家餐厅提供平民价格的美味食物。", text3: "Bình dân  - 平民", audioFile: "401-500.mp3" },
+{ start: 56.187687, end: 59.935034, text: "Ngôi nhà được trang trí ấm cúng, tạo cảm giác thoải mái cho khách.", text2: "这所房子装饰得温馨，给客人带来舒适的感觉。", text3: "Ấm cúng  - 温馨", audioFile: "401-500.mp3" },
+{ start: 60.397211, end: 64.455261, text: "Bữa tiệc được tổ chức một cách hào nhoáng với nhiều ánh sáng và âm nhạc.", text2: "派对被组织得华丽，有许多灯光和音乐。", text3: "Hào nhoáng  - 华丽", audioFile: "401-500.mp3" },
+{ start: 64.897392, end: 68.694853, text: "Cô ấy chọn một phong cách sống mộc mạc, xa lánh sự xa hoa.", text2: "她选择了一种朴素的生活方式，远离奢华。", text3: "Mộc mạc  - 朴素", audioFile: "401-500.mp3" },
+{ start: 69.126961, end: 71.400975, text: "Anh ấy rất nóng nảy và dễ dàng nổi giận.", text2: "他非常急性子，容易发怒。", text3: "Nóng nảy  - 急性子", audioFile: "401-500.mp3" },
+{ start: 71.843107, end: 74.648322, text: "Cô ấy luôn lo lắng về sức khỏe của cha mẹ mình.", text2: "她总是担忧父母的健康。", text3: "Lo lắng  - 担忧", audioFile: "401-500.mp3" },
+{ start: 75.110499, end: 77.835533, text: "Cô ấy cảm thấy buồn bã sau khi mất người thân.", text2: "失去亲人后，她感到非常悲伤。", text3: "Buồn bã  - 悲伤", audioFile: "401-500.mp3" },
+{ start: 78.317755, end: 81.604059, text: "Anh ấy có vẻ ngoài khó gần, khiến người khác e dè.", text2: "他看起来很难接近，让别人感到害怕。", text3: "Khó gần  - 难接近", audioFile: "401-500.mp3" },
+{ start: 82.126372, end: 85.422698, text: "Hắn ta đã thực hiện những hành động nhẫn tâm đối với kẻ thù.", text2: "他对敌人做了残忍的事情。", text3: "Nhẫn tâm  - 残忍", audioFile: "401-500.mp3" },
+{ start: 85.884875, end: 89.10102, text: "Những hành động của anh ấy có vẻ mờ ám và không rõ ràng.", text2: "他的行为看起来很暗中，不清楚。", text3: "Mờ ám  - 暗中", audioFile: "401-500.mp3" },
+{ start: 89.583243, end: 92.087778, text: "Cô ấy luôn tươi cười với mọi người xung quanh.", text2: "她总是对周围的人微笑。", text3: "Tươi cười  - 笑脸", audioFile: "401-500.mp3" },
+{ start: 92.57, end: 96.457664, text: "Gia đình họ đã vượt qua nhiều sóng gió để có được hạnh phúc hôm nay.", text2: "他们的家庭克服了许多风雨，才有了今天的幸福。", text3: "Sóng gió  - 风雨", audioFile: "401-500.mp3" },
+{ start: 96.919841, end: 100.045782, text: "Cô ấy xuất hiện với vẻ ngoài cao sang tại buổi dạ tiệc.", text2: "她在舞会上以高贵的外貌出现。", text3: "Cao sang  - 高贵", audioFile: "401-500.mp3" },
+{ start: 100.54805, end: 103.694036, text: "Anh ấy bị bạn bè xa lánh sau khi sự thật bị phơi bày.", text2: "真相曝光后，他被朋友们疏远。", text3: "Xa lánh  - 疏远", audioFile: "401-500.mp3" },
+{ start: 104.206327, end: 107.141837, text: "Cô bé rất dễ mến, ai cũng muốn chơi với em.", text2: "这个小女孩非常友善，人人都喜欢和她玩。", text3: "Dễ mến  - 友善", audioFile: "401-500.mp3" },
+{ start: 107.604014, end: 110.830181, text: "Anh ấy bị phê bình vì thái độ vô trách nhiệm trong công việc.", text2: "他因为在工作中的不负责任态度而受到批评。", text3: "Vô trách nhiệm  - 不负责任", audioFile: "401-500.mp3" },
+{ start: 111.272313, end: 115.079796, text: "Hắn ta có tính cách xấu bụng và thường xuyên gây khó dễ cho người khác.", text2: "他性格恶意，经常给别人制造麻烦。", text3: "Xấu bụng  - 恶意", audioFile: "401-500.mp3" },
+{ start: 115.501882, end: 119.359478, text: "Ngôi nhà này rất vững chãi, có thể chịu được mọi thời tiết khắc nghiệt.", text2: "这座房子非常坚固，能承受所有恶劣天气。", text3: "Vững chãi  - 坚固", audioFile: "401-500.mp3" },
+{ start: 119.881791, end: 123.107959, text: "Cô ấy rất yêu quý công việc và luôn cống hiến hết mình.", text2: "她非常珍爱这份工作，总是全力以赴。", text3: "Yêu quý  - 珍爱", audioFile: "401-500.mp3" },
+{ start: 123.560113, end: 126.846417, text: "Anh ấy luôn coi thường những người không có cùng quan điểm với mình.", text2: "他总是轻视那些与自己意见不同的人。", text3: "Coi thường  - 轻视", audioFile: "401-500.mp3" },
+{ start: 127.288549, end: 130.645011, text: "Ông ấy là người hào hiệp, luôn giúp đỡ những người khó khăn.", text2: "他是一个慷慨的人，总是帮助有困难的人。", text3: "Hào hiệp  - 慷慨", audioFile: "401-500.mp3" },
+{ start: 131.137256, end: 134.964785, text: "Hắn ta bị coi là kẻ ti tiện vì luôn tìm cách hãm hại người khác.", text2: "他因为总是设法伤害别人而被视为卑鄙。", text3: "Ti tiện  - 卑鄙", audioFile: "401-500.mp3" },
+{ start: 135.396893, end: 138.202109, text: "Cô ấy thật lòng muốn giúp đỡ mọi người xung quanh.", text2: "她真心想帮助周围的人。", text3: "Thật lòng  - 诚心", audioFile: "401-500.mp3" },
+{ start: 138.634218, end: 141.860385, text: "Cô ấy đã kiên cường vượt qua mọi khó khăn để thành công.", text2: "她坚强地克服了所有困难，取得了成功。", text3: "Kiên cường  - 坚强", audioFile: "401-500.mp3" },
+{ start: 142.292494, end: 145.538707, text: "Anh ấy đã lơ là trách nhiệm và gây ra sai lầm nghiêm trọng.", text2: "他疏忽了责任，导致了严重的错误。", text3: "Lơ là  - 疏忽", audioFile: "401-500.mp3" },
+{ start: 146.02093, end: 149.317256, text: "Mối quan hệ giữa hai người rất vững bền qua thời gian.", text2: "两人之间的关系在时间的考验下非常稳固。", text3: "Vững bền  - 稳固", audioFile: "401-500.mp3" },
+{ start: 149.759388, end: 152.795125, text: "Cây cối trong vườn đã khô héo do không được tưới nước.", text2: "园子里的植物因为没有浇水而枯萎了。", text3: "Khô héo  - 枯萎", audioFile: "401-500.mp3" },
+{ start: 153.267324, end: 155.862063, text: "Anh ấy cảm thấy bồn chồn trước khi vào phỏng vấn.", text2: "面试前，他感到非常焦虑。", text3: "Bồn chồn  - 焦虑", audioFile: "401-500.mp3" },
+{ start: 156.32424, end: 159.139478, text: "Bài giảng của giáo viên rất dễ hiểu và sinh động.", text2: "老师的讲解非常易懂且生动。", text3: "Dễ hiểu  - 易懂", audioFile: "401-500.mp3" },
+{ start: 159.631723, end: 163.108458, text: "Nội dung của cuốn sách này khá khó hiểu đối với người mới học.", text2: "对于初学者来说，这本书的内容相当难懂。", text3: "Khó hiểu  - 难懂", audioFile: "401-500.mp3" },
+{ start: 163.520522, end: 167.698844, text: "Thiết kế của ngôi nhà này rất độc đáo và không giống bất kỳ ngôi nhà nào khác.", text2: "这座房子的设计非常独特，不像其他任何房子。", text3: "Độc đáo  - 独特", audioFile: "401-500.mp3" },
+{ start: 168.181066, end: 171.05644, text: "Gia đình cô ấy luôn giữ gìn các giá trị truyền thống.", text2: "她的家庭一直保持着传统的价值观。", text3: "Truyền thống  - 传统", audioFile: "401-500.mp3" },
+{ start: 171.498571, end: 174.784875, text: "Con đường này rất thân quen với tôi vì tôi đi qua đây hàng ngày.", text2: "这条路对我来说非常熟悉，因为我每天都经过这里。", text3: "Thân quen  - 熟悉", audioFile: "401-500.mp3" },
+{ start: 175.257075, end: 178.994399, text: "Anh ấy có khả năng phi thường trong việc giải quyết các vấn đề khó khăn.", text2: "他在解决困难问题方面有非凡的能力。", text3: "Phi thường  - 非凡", audioFile: "401-500.mp3" },
+{ start: 179.436531, end: 182.833084, text: "Đề xuất của anh ấy rất hợp lý và đã được mọi người chấp nhận.", text2: "他的提议非常合理，得到了大家的接受。", text3: "Hợp lý  - 合理", audioFile: "401-500.mp3" },
+{ start: 183.295261, end: 186.872222, text: "Những yêu cầu của cô ấy thật vô lý và không thể thực hiện được.", text2: "她的要求非常无理，无法实现。", text3: "Vô lý  - 无理", audioFile: "401-500.mp3" },
+{ start: 187.37449, end: 191.612948, text: "Vị trí của cửa hàng rất tiện lợi, dễ dàng tiếp cận từ mọi hướng.", text2: "这家商店的位置非常方便，从各个方向都能轻松到达。", text3: "Tiện lợi  - 方便", audioFile: "401-500.mp3" },
+{ start: 192.065102, end: 195.601973, text: "Việc sửa chữa đường phố đã gây ra nhiều bất tiện cho cư dân.", text2: "街道维修给居民带来了很多不便。", text3: "Bất tiện  - 不便", audioFile: "401-500.mp3" },
+{ start: 196.084195, end: 200.362744, text: "Cô ấy có giọng nói rất thân thương, làm cho người nghe cảm thấy ấm lòng.", text2: "她的声音非常亲切，让听者感到温暖。", text3: "Thân thương  - 亲切", audioFile: "401-500.mp3" },
+{ start: 200.905102, end: 203.409637, text: "Phòng của cô ấy luôn ngăn nắp và gọn gàng.", text2: "她的房间总是整齐有序。", text3: "Ngăn nắp  - 整齐", audioFile: "401-500.mp3" },
+{ start: 203.901882, end: 208.270635, text: "Sau buổi tiệc, căn nhà trở nên bừa bộn với đồ đạc vương vãi khắp nơi.", text2: "派对结束后，房子变得凌乱，东西散落在各处。", text3: "Bừa bộn  - 凌乱", audioFile: "401-500.mp3" },
+{ start: 208.712766, end: 211.948957, text: "Buổi lễ được tổ chức một cách hoành tráng và đầy ấn tượng.", text2: "仪式以隆重和令人印象深刻的方式举行。", text3: "Hoành tráng  - 隆重", audioFile: "401-500.mp3" },
+{ start: 212.401111, end: 215.777619, text: "Anh ấy luôn có thái độ đùa cợt, không bao giờ nghiêm túc.", text2: "他总是以戏谑的态度，不曾认真。", text3: "Đùa cợt  - 戏谑", audioFile: "401-500.mp3" },
+{ start: 216.189683, end: 220.077347, text: "Cô ấy rất tự giác trong việc hoàn thành công việc mà không cần nhắc nhở.", text2: "她在完成工作方面非常自觉，不需要提醒。", text3: "Tự giác  - 自觉", audioFile: "401-500.mp3" },
+{ start: 220.559569, end: 223.64542, text: "Anh ấy luôn trong tình trạng bị động, chờ người khác chỉ dẫn.", text2: "他总是处于被动状态，等待别人的指示。", text3: "Bị động  - 被动", audioFile: "401-500.mp3" },
+{ start: 224.077528, end: 227.183424, text: "Dự án đã trì trệ trong nhiều tháng do thiếu kinh phí.", text2: "由于资金短缺，项目已停滞数月。", text3: "Trì trệ  - 停滞", audioFile: "401-500.mp3" },
+{ start: 227.655624, end: 231.162426, text: "Ông ấy trở nên gắt gỏng khi mọi thứ không diễn ra theo ý muốn.", text2: "当事情不如意时，他变得非常易怒。", text3: "Gắt gỏng  - 易怒，暴躁", audioFile: "401-500.mp3" },
+{ start: 231.604558, end: 234.890862, text: "Mọi người đều mong muốn một thế giới hòa bình và ổn định.", text2: "人人都希望世界和平与稳定。", text3: "Hòa bình  - 和平", audioFile: "401-500.mp3" },
+{ start: 235.312948, end: 238.278526, text: "Chiến tranh đã gây ra biết bao đau thương cho nhân loại.", text2: "战争给人类带来了无尽的痛苦。", text3: "Chiến tranh  - 战争", audioFile: "401-500.mp3" },
+{ start: 238.700612, end: 242.307642, text: "Văn hóa ẩm thực của đất nước này rất phong phú và đa dạng.", text2: "这个国家的饮食文化非常丰富多样。", text3: "Phong phú  - 丰富", audioFile: "401-500.mp3" },
+{ start: 242.809909, end: 245.985964, text: "Khu vực này vẫn còn nghèo nàn và thiếu thốn về mọi mặt.", text2: "这个地区仍然贫乏，各方面都缺乏。", text3: "Nghèo nàn  - 贫乏", audioFile: "401-500.mp3" },
+{ start: 246.448141, end: 250.115306, text: "Cô ấy có vẻ ngoài nghiêm nghị, luôn tuân thủ kỷ luật nghiêm ngặt.", text2: "她外表严肃，始终严格遵守纪律。", text3: "Nghiêm nghị  - 严肃", audioFile: "401-500.mp3" },
+{ start: 250.547415, end: 253.863787, text: "Bữa tiệc đã trở nên vui nhộn nhờ những trò chơi thú vị.", text2: "由于有趣的游戏，派对变得非常欢快。", text3: "Vui nhộn  - 欢快", audioFile: "401-500.mp3" },
+{ start: 254.396122, end: 258.404059, text: "Phòng được thiết kế với nhiều cửa sổ lớn để đảm bảo không khí thông thoáng.", text2: "房间设计有许多大窗户，以确保空气流通。", text3: "Thông thoáng  - 通风", audioFile: "401-500.mp3" },
+{ start: 258.896304, end: 261.932041, text: "Không khí trong phòng trở nên ngột ngạt do không có cửa sổ.", text2: "由于没有窗户，房间里的空气变得闷热。", text3: "Ngột ngạt  - 闷热", audioFile: "401-500.mp3" },
+{ start: 262.40424, end: 265.981202, text: "Anh ấy có tính cách mạnh bạo, không ngại đối đầu với thử thách.", text2: "他的性格很强悍，不怕面对挑战。", text3: "Mạnh bạo  - 强悍", audioFile: "401-500.mp3" },
+{ start: 266.403288, end: 269.278662, text: "Cô bé rất nhút nhát khi phải nói chuyện trước đám đông.", text2: "这个女孩在众人面前说话时非常胆小。", text3: "Nhút nhát  - 胆小", audioFile: "401-500.mp3" },
+{ start: 269.740839, end: 272.977029, text: "Anh ấy đã bạo gan nhận nhiệm vụ khó khăn mà không ai dám làm.", text2: "他勇敢地接受了没人敢做的艰难任务。", text3: "Bạo gan  - 勇敢", audioFile: "401-500.mp3" },
+{ start: 273.449229, end: 276.555125, text: "Món ăn này có hương vị đậm đà và thơm ngon.", text2: "这道菜味道浓郁，非常美味。", text3: "Đậm đà  - 浓郁", audioFile: "401-500.mp3" },
+{ start: 277.017302, end: 279.782426, text: "Hoa hồng tỏa ra hương thơm ngát khắp khu vườn.", text2: "玫瑰花的香气芬芳，弥漫整个花园。", text3: "Thơm ngát  - 芬芳", audioFile: "401-500.mp3" },
+{ start: 280.23458, end: 282.849365, text: "Thùng rác trong góc phòng đã bốc mùi hôi thối.", text2: "角落里的垃圾桶已经开始散发臭味。", text3: "Hôi thối  - 臭", audioFile: "401-500.mp3" },
+{ start: 283.321565, end: 286.698073, text: "Đồ sứ rất dễ vỡ, cần phải cẩn thận khi vận chuyển.", text2: "瓷器很易碎，运输时需要小心。", text3: "Dễ vỡ  - 易碎", audioFile: "401-500.mp3" },
+{ start: 287.110136, end: 290.466599, text: "Công nghệ ở khu vực này vẫn còn lạc hậu so với các nơi khác.", text2: "这一地区的技术仍然落后于其他地方。", text3: "Lạc hậu  - 落后", audioFile: "401-500.mp3" },
+{ start: 290.958844, end: 294.265193, text: "Nguồn tài nguyên thiên nhiên của quốc gia này rất dồi dào.", text2: "这个国家的自然资源非常丰富。", text3: "Dồi dào  - 丰富", audioFile: "401-500.mp3" },
+{ start: 294.757438, end: 298.705238, text: "Số lượng sách trong thư viện không đủ đáp ứng nhu cầu của học sinh.", text2: "图书馆的书籍数量不足以满足学生的需求。", text3: "Không đủ  - 不足", audioFile: "401-500.mp3" },
+{ start: 299.167415, end: 302.132993, text: "Cô ấy từ tốn trả lời từng câu hỏi một cách kỹ lưỡng.", text2: "她缓慢地回答每一个问题，十分仔细。", text3: "Từ tốn  - 缓慢", audioFile: "401-500.mp3" },
+{ start: 302.575125, end: 305.540703, text: "Công việc hàng ngày của anh ấy rất đơn điệu và buồn tẻ.", text2: "他的日常工作非常单调和无聊。", text3: "Đơn điệu  - 单调", audioFile: "401-500.mp3" },
+{ start: 306.022925, end: 309.870499, text: "Thực đơn của nhà hàng này rất đa dạng, phù hợp với nhiều sở thích.", text2: "这家餐厅的菜单非常多样，适合各种口味。", text3: "Đa dạng  - 多样", audioFile: "401-500.mp3" },
+{ start: 310.352721, end: 313.498707, text: "Khu vực này đang đối mặt với tình trạng thiếu hụt nước sạch.", text2: "这一地区正面临清洁水源的缺乏。", text3: "Thiếu hụt  - 缺乏", audioFile: "401-500.mp3" },
+{ start: 313.970907, end: 317.317347, text: "Cô ấy có tính cách khép kín, ít chia sẻ với người khác.", text2: "她性格封闭，很少与别人分享。", text3: "Khép kín  - 封闭", audioFile: "401-500.mp3" },
+{ start: 317.759478, end: 320.865374, text: "Anh ấy là một người đáng tin, luôn giữ lời hứa.", text2: "他是一个可靠的人，总是信守承诺。", text3: "Đáng tin  - 可靠", audioFile: "401-500.mp3" },
+{ start: 321.307506, end: 324.764195, text: "Thông tin từ nguồn này không tin cậy và cần phải kiểm chứng lại.", text2: "来自这个来源的信息不可信，需要重新核实。", text3: "Không tin cậy  - 不可信", audioFile: "401-500.mp3" },
+{ start: 325.236395, end: 328.051633, text: "Cô ấy cư xử rất tự nhiên trong mọi tình huống.", text2: "她在任何情况下都表现得非常自然。", text3: "Tự nhiên  - 自然", audioFile: "401-500.mp3" },
+{ start: 328.473719, end: 331.970499, text: "Cuộc trò chuyện trở nên gượng gạo khi cả hai không biết nói gì thêm.", text2: "当两人都不知道再说什么时，谈话变得尴尬。", text3: "Gượng gạo  - 尴尬", audioFile: "401-500.mp3" },
+{ start: 332.432676, end: 335.378209, text: "Anh ấy thường cảm thấy u sầu khi mùa đông đến.", text2: "当冬天来临时，他经常感到忧郁。", text3: "U sầu  - 忧郁", audioFile: "401-500.mp3" },
+{ start: 335.830363, end: 338.996395, text: "Căn phòng này quá mờ tối, cần thêm ánh sáng.", text2: "这个房间太昏暗了，需要更多的光线。", text3: "Mờ tối  - 昏暗", audioFile: "401-500.mp3" },
+{ start: 339.418481, end: 343.055578, text: "Cô ấy luôn hành động một cách ngay thẳng và không che giấu sự thật.", text2: "她总是正直地行事，从不隐瞒事实。", text3: "Ngay thẳng  - 正直", audioFile: "401-500.mp3" },
+{ start: 343.517755, end: 345.9822, text: "Con đường lên núi rất quanh co và khó đi.", text2: "通往山顶的道路非常曲折且难以行走。", text3: "Quanh co  - 曲折", audioFile: "401-500.mp3" },
+{ start: 346.434354, end: 349.239569, text: "Thời tiết khô hanh khiến da cô ấy bị nứt nẻ.", text2: "干燥的天气使她的皮肤开裂。", text3: "Khô hanh  - 干燥", audioFile: "401-500.mp3" },
+{ start: 349.701746, end: 353.318798, text: "Anh ấy bị chỉ trích vì sử dụng ngôn ngữ thô tục trong buổi họp.", text2: "他在会议上使用粗俗的语言而受到批评。", text3: "Thô tục  - 粗俗", audioFile: "401-500.mp3" },
+{ start: 353.76093, end: 356.646327, text: "Cô ấy luôn thành thật trong mọi lời nói và hành động.", text2: "她在言行上始终诚实。", text3: "Thành thật  - 诚实", audioFile: "401-500.mp3" },
+{ start: 357.128549, end: 360.044014, text: "Anh ấy cảm thấy tự hào về thành tựu mình đã đạt được.", text2: "他为自己取得的成就感到自豪。", text3: "Tự hào  - 自豪", audioFile: "401-500.mp3" },
+{ start: 360.496168, end: 363.441701, text: "Cô ấy cảm thấy xấu hổ khi bị phát hiện nói dối.", text2: "当她被发现说谎时感到非常羞愧。", text3: "Xấu hổ  - 羞愧", audioFile: "401-500.mp3" },
+{ start: 363.903878, end: 366.729138, text: "Cả lớp trở nên yên lặng khi giáo viên bước vào.", text2: "当老师走进来时，整个教室变得安静。", text3: "Yên lặng  - 安静", audioFile: "401-500.mp3" },
+{ start: 367.211361, end: 370.227052, text: "Cô bé ngại ngùng khi phải đứng trước lớp phát biểu.", text2: "小女孩在全班面前发言时显得非常羞怯。", text3: "Ngại ngùng  - 羞怯", audioFile: "401-500.mp3" },
+{ start: 0, end: 3.316939, text: "Hành động của anh ấy quá trẻ con đối với người ở độ tuổi của anh.", text2: "对于他这个年纪的人来说，他的行为显得过于幼稚。", text3: "Trẻ con  - 幼稚", audioFile: "501-600.mp3" },
+{ start: 3.75907, end: 6.895034, text: "Anh ấy đã trở thành người lớn, có trách nhiệm với gia đình.", text2: "他已经成熟了，负起了家庭的责任。", text3: "Người lớn  - 成熟", audioFile: "501-600.mp3" },
+{ start: 7.377256, end: 10.332812, text: "Cô ấy cảm thấy bị ràng buộc bởi các quy tắc nghiêm ngặt.", text2: "她感到被严格的规则束缚。", text3: "Bị ràng buộc  - 被束缚", audioFile: "501-600.mp3" },
+{ start: 10.784966, end: 13.419796, text: "Ông ấy trở nên cáu kỉnh khi không ngủ đủ giấc.", text2: "当他没有睡够时，他变得非常暴躁。", text3: "Cáu kỉnh  - 暴躁", audioFile: "501-600.mp3" },
+{ start: 13.87195, end: 16.777392, text: "Thiết kế này rất giản đơn nhưng vô cùng hiệu quả.", text2: "这个设计非常简单但极其有效。", text3: "Giản đơn  - 简单", audioFile: "501-600.mp3" },
+{ start: 17.219524, end: 20.275306, text: "Nước ở suối này rất tinh khiết, không bị ô nhiễm.", text2: "这条溪流的水非常纯净，没有被污染。", text3: "Tinh khiết  - 纯净", audioFile: "501-600.mp3" },
+{ start: 20.707415, end: 24.474807, text: "Thành phố này đang phải đối mặt với vấn đề ô nhiễm không khí nghiêm trọng.", text2: "这座城市正面临严重的空气污染问题。", text3: "Ô nhiễm  - 污染", audioFile: "501-600.mp3" },
+{ start: 24.947007, end: 28.123061, text: "Anh ấy luôn giữ môi trường sống của mình trong sạch và ngăn nắp.", text2: "他总是保持自己的生活环境清洁和整齐。", text3: "Trong sạch  - 清洁", audioFile: "501-600.mp3" },
+{ start: 28.605283, end: 32.292494, text: "Căn phòng trở nên dơ bẩn sau khi bị bỏ quên trong thời gian dài.", text2: "房间被遗弃了很长时间，变得非常肮脏。", text3: "Dơ bẩn  - 肮脏", audioFile: "501-600.mp3" },
+{ start: 32.814807, end: 35.630045, text: "Cô ấy luôn giữ cho sách vở ngay ngắn trên bàn học.", text2: "她总是保持书本端正地放在书桌上。", text3: "Ngay ngắn  - 端正", audioFile: "501-600.mp3" },
+{ start: 36.0822, end: 39.097891, text: "Quần áo của anh ấy trông rất xộc xệch và không gọn gàng.", text2: "他的衣服看起来很松散，不整洁。", text3: "Xộc xệch  - 松散", audioFile: "501-600.mp3" },
+{ start: 39.600159, end: 42.405374, text: "Mọi thứ trong căn phòng đều được sắp xếp gọn gàng.", text2: "房间里的所有东西都摆放得很整洁。", text3: "Gọn gàng  - 整洁", audioFile: "501-600.mp3" },
+{ start: 42.847506, end: 47.18619, text: "Sau buổi tiệc, căn nhà trở nên bừa bãi với đồ đạc vương vãi khắp nơi.", text2: "派对结束后，房子变得凌乱，东西散落在各处。", text3: "Bừa bãi  - 凌乱", audioFile: "501-600.mp3" },
+{ start: 47.65839, end: 50.563832, text: "Cô ấy được biết đến là người ngay thật và đáng tin cậy.", text2: "她以诚实和可靠著称。", text3: "Ngay thật  - 诚实", audioFile: "501-600.mp3" },
+{ start: 51.015986, end: 55.064014, text: "Ông ấy là một người thông thái, luôn có câu trả lời cho mọi thắc mắc.", text2: "他是一个智慧的人，总能回答所有问题。", text3: "Thông thái  - 智慧", audioFile: "501-600.mp3" },
+{ start: 55.546236, end: 58.792449, text: "Anh ấy bị lừa vì quá khờ dại và tin tưởng vào người khác.", text2: "他因为太愚笨而被欺骗，信任了别人。", text3: "Khờ dại  - 愚笨", audioFile: "501-600.mp3" },
+{ start: 59.244603, end: 62.891723, text: "Cô ấy cảm thấy không thoải mái khi phải gượng ép làm điều mình không thích.", text2: "她在被勉强做自己不喜欢的事情时感到不舒服。", text3: "Gượng ép  - 勉强", audioFile: "501-600.mp3" },
+{ start: 63.323832, end: 66.088957, text: "Anh ấy rất keo kiệt và không muốn chia sẻ với ai.", text2: "他非常吝啬，不愿意与任何人分享。", text3: "Keo kiệt  - 吝啬", audioFile: "501-600.mp3" },
+{ start: 66.571179, end: 69.887551, text: "Hành vi tàn ác của hắn ta đã khiến nhiều người phải đau khổ.", text2: "他的残酷行为让很多人痛苦不堪。", text3: "Tàn ác  - 残酷", audioFile: "501-600.mp3" },
+{ start: 70.369773, end: 73.806417, text: "Ngôi nhà của cô ấy luôn được giữ gìn tinh tươm và gọn gàng.", text2: "她的房子总是保持得很干净和整齐。", text3: "Tinh tươm  - 干净", audioFile: "501-600.mp3" },
+{ start: 74.268594, end: 78.035986, text: "Cậu bé trở về nhà trong trạng thái lem luốc sau khi chơi ngoài trời.", text2: "小男孩在外面玩耍后，邋遢地回到了家。", text3: "Lem luốc  - 邋遢", audioFile: "501-600.mp3" },
+{ start: 78.578345, end: 81.764422, text: "Anh ấy mù quáng tin tưởng vào những lời hứa hẹn hão huyền.", text2: "他盲目地相信那些虚假的承诺。", text3: "Mù quáng  - 盲目", audioFile: "501-600.mp3" },
+{ start: 82.216576, end: 86.525193, text: "Bài thuyết trình của cô ấy rất lôi cuốn và thu hút sự chú ý của mọi người.", text2: "她的演讲非常吸引人，吸引了大家的注意。", text3: "Lôi cuốn  - 吸引", audioFile: "501-600.mp3" },
+{ start: 86.997392, end: 91.185737, text: "Anh ấy trải qua cảm giác cay đắng khi nhớ lại những thất bại trong quá khứ.", text2: "当他回忆起过去的失败时，感到苦涩。", text3: "Cay đắng  - 苦涩", audioFile: "501-600.mp3" },
+{ start: 91.647914, end: 94.773855, text: "Cô ấy luôn giữ được thái độ điềm đạm trong mọi tình huống.", text2: "她在任何情况下都保持沉着的态度。", text3: "Điềm đạm  - 沉着", audioFile: "501-600.mp3" },
+{ start: 95.256077, end: 99.003424, text: "Sự thật được phơi bày một cách trần trụi, không chút che giấu.", text2: "真相被裸露地揭示出来，没有任何隐瞒。", text3: "Trần trụi  - 裸露", audioFile: "501-600.mp3" },
+{ start: 99.475624, end: 102.842109, text: "Chiếc vali quá cồng kềnh để mang theo trên chuyến đi.", text2: "这个行李箱太笨重了，无法携带旅行。", text3: "Cồng kềnh  - 笨重", audioFile: "501-600.mp3" },
+{ start: 103.314308, end: 106.249819, text: "Anh ấy cảm thấy u uất và lạc lõng trong cuộc sống.", text2: "他感到生活中充满了忧郁和孤独。", text3: "U uất  - 忧郁", audioFile: "501-600.mp3" },
+{ start: 106.69195, end: 109.837937, text: "Cuộc tranh luận diễn ra rất quyết liệt và không ai nhường bước.", text2: "争论非常激烈，双方都不让步。", text3: "Quyết liệt  - 激烈", audioFile: "501-600.mp3" },
+{ start: 110.340204, end: 113.676621, text: "Ông ấy giữ lập trường cứng rắn và không thay đổi quan điểm.", text2: "他保持坚硬的立场，毫不改变观点。", text3: "Cứng rắn  - 坚硬", audioFile: "501-600.mp3" },
+{ start: 114.138798, end: 117.184558, text: "Cô ấy dùng lời nói mềm mỏng để thuyết phục đối phương.", text2: "她用温和的语言说服对方。", text3: "Mềm mỏng  - 温和", audioFile: "501-600.mp3" },
+{ start: 117.626689, end: 121.333946, text: "Anh ấy là người đàn ông hào hoa, luôn lịch lãm trong cách cư xử.", text2: "他是一个风度翩翩的男人，总是表现得很有礼貌。", text3: "Hào hoa  - 风度翩翩", audioFile: "501-600.mp3" },
+{ start: 121.806145, end: 125.002245, text: "Căn biệt thự được trang trí một cách xa hoa và lộng lẫy.", text2: "别墅被装饰得奢华而辉煌。", text3: "Xa hoa  - 奢华", audioFile: "501-600.mp3" },
+{ start: 125.474444, end: 128.43, text: "Khách sạn này cung cấp dịch vụ sang trọng và đẳng cấp.", text2: "这家酒店提供豪华的服务。", text3: "Sang trọng  - 豪华", audioFile: "501-600.mp3" },
+{ start: 128.9022, end: 132.469138, text: "Ngôi đền này có kiến trúc cổ kính, thu hút nhiều du khách.", text2: "这座寺庙有着古老的建筑，吸引了许多游客。", text3: "Cổ kính  - 古老", audioFile: "501-600.mp3" },
+{ start: 132.91127, end: 136.027188, text: "Cô ấy có vẻ đẹp yêu kiều khiến ai cũng phải ngắm nhìn.", text2: "她的美丽妖娆，令人忍不住注视。", text3: "Yêu kiều  - 妖娆", audioFile: "501-600.mp3" },
+{ start: 136.46932, end: 139.685465, text: "Anh ấy có vẻ ngoài già dặn hơn so với tuổi thật của mình.", text2: "他看起来比实际年龄要成熟。", text3: "Già dặn  - 成熟", audioFile: "501-600.mp3" },
+{ start: 140.167687, end: 144.145556, text: "Buổi hòa nhạc tối qua thật tuyệt vời, để lại ấn tượng sâu sắc.", text2: "昨晚的音乐会非常美妙，留下了深刻的印象。", text3: "Tuyệt vời  - 美妙", audioFile: "501-600.mp3" },
+{ start: 144.587687, end: 147.803832, text: "Món ăn hôm nay thật dở tệ, không ai muốn ăn.", text2: "今天的菜肴非常糟糕，没人愿意吃。", text3: "Dở tệ  - 糟糕", audioFile: "501-600.mp3" },
+{ start: 148.286054, end: 151.301746, text: "Cô bé có khuôn mặt tròn trịa và đôi má hồng hào.", text2: "小女孩有着圆润的脸庞和红润的双颊。", text3: "Tròn trịa  - 圆润", audioFile: "501-600.mp3" },
+{ start: 151.763923, end: 155.390998, text: "Sau nhiều tháng bệnh tật, anh ấy trở nên gầy guộc và yếu ớt.", text2: "经过几个月的疾病，他变得瘦弱和虚弱。", text3: "Gầy guộc  - 瘦弱", audioFile: "501-600.mp3" },
+{ start: 155.853175, end: 158.979116, text: "Cô ấy luôn khao khát được trở thành một nhà văn nổi tiếng.", text2: "她一直渴望成为一名著名的作家。", text3: "Khao khát  - 渴望", audioFile: "501-600.mp3" },
+{ start: 159.401202, end: 162.587279, text: "Anh ấy có hứng thú đặc biệt với các môn thể thao mạo hiểm.", text2: "他对极限运动有着特别的兴趣。", text3: "Hứng thú  - 兴趣", audioFile: "501-600.mp3" },
+{ start: 163.02941, end: 166.045102, text: "Thiết kế của sản phẩm này rất mới mẻ và sáng tạo.", text2: "这款产品的设计非常新颖和创新。", text3: "Mới mẻ  - 新颖", audioFile: "501-600.mp3" },
+{ start: 166.517302, end: 170.014082, text: "Cô ấy cảm thấy tương lai của mình thật mờ mịt và không rõ ràng.", text2: "她感到自己的未来非常迷茫和不清晰。", text3: "Mờ mịt  - 迷茫", audioFile: "501-600.mp3" },
+{ start: 170.536395, end: 173.79263, text: "Bạo lực trong gia đình là một vấn đề nghiêm trọng cần được giải quyết.", text2: "家庭暴力是一个需要解决的严重问题。", text3: "Bạo lực  - 暴力", audioFile: "501-600.mp3" },
+{ start: 174.294898, end: 178.052268, text: "Tiếng ồn ầm ĩ từ công trường khiến cô ấy không thể tập trung làm việc.", text2: "工地的喧闹声让她无法集中精力工作。", text3: "Ầm ĩ  - 喧闹", audioFile: "501-600.mp3" },
+{ start: 178.494399, end: 181.951088, text: "Đừng làm những việc ngớ ngẩn mà bạn sẽ phải hối tiếc sau này.", text2: "别做那些将来你会后悔的愚蠢事。", text3: "Ngớ ngẩn  - 愚蠢", audioFile: "501-600.mp3" },
+{ start: 182.413265, end: 185.108231, text: "Anh ấy trông rất lờ đờ sau một đêm thức trắng.", text2: "他在熬夜后看起来非常疲倦。", text3: "Lờ đờ  - 疲倦", audioFile: "501-600.mp3" },
+{ start: 185.610499, end: 189.197483, text: "Phố đi bộ vào buổi tối rất sôi động với nhiều hoạt động giải trí.", text2: "晚上的步行街非常热闹，有许多娱乐活动。", text3: "Sôi động  - 热闹", audioFile: "501-600.mp3" },
+{ start: 189.639615, end: 193.206553, text: "Gia đình cô ấy tổ chức một bữa tối đầm ấm nhân dịp sum họp.", text2: "她的家庭在团聚之际举办了一个温馨的晚餐。", text3: "Đầm ấm  - 温馨", audioFile: "501-600.mp3" },
+{ start: 193.66873, end: 196.343651, text: "Ông lão có tính cách chất phác và sống giản dị.", text2: "老人性格朴实，生活简朴。", text3: "Chất phác  - 朴实", audioFile: "501-600.mp3" },
+{ start: 196.795805, end: 200.142245, text: "Hắn ta là một kẻ xảo quyệt, luôn tìm cách lừa người khác.", text2: "他是一个狡猾的人，总是设法欺骗别人。", text3: "Xảo quyệt  - 狡猾", audioFile: "501-600.mp3" },
+{ start: 200.574354, end: 203.950862, text: "Mọi người đều có quyền được đối xử bình đẳng trong xã hội.", text2: "人人在社会中都有权得到平等对待。", text3: "Bình đẳng  - 平等", audioFile: "501-600.mp3" },
+{ start: 204.403016, end: 208.170408, text: "Những quy tắc này quá bó buộc, khiến mọi người không thoải mái.", text2: "这些规则太过束缚，让人们感到不适。", text3: "Bó buộc  - 束缚", audioFile: "501-600.mp3" },
+{ start: 208.622562, end: 211.588141, text: "Cô ấy cảm thấy gò bó trong môi trường làm việc hiện tại.", text2: "她在当前的工作环境中感到很拘束。", text3: "Gò bó  - 拘束", audioFile: "501-600.mp3" },
+{ start: 212.040295, end: 215.958027, text: "Anh ấy không muốn sống trong sự dốt nát, luôn tìm cách học hỏi thêm.", text2: "他不想生活在无知中，总是设法学习更多。", text3: "Dốt nát  - 无知", audioFile: "501-600.mp3" },
+{ start: 216.450272, end: 219.736576, text: "Anh ấy là một người đàn ông thành đạt trong lĩnh vực kinh doanh.", text2: "他是商界中的一位成功人士。", text3: "Thành đạt  - 成功", audioFile: "501-600.mp3" },
+{ start: 220.178707, end: 223.875941, text: "Ngôi nhà này đã trở nên cũ kỹ sau nhiều năm không được sửa chữa.", text2: "这座房子多年未修，已经变得陈旧。", text3: "Cũ kỹ  - 陈旧", audioFile: "501-600.mp3" },
+{ start: 224.348141, end: 228.005283, text: "Cô ấy trở nên yếu mềm khi phải đối diện với nỗi đau trong quá khứ.", text2: "当她面对过去的痛苦时变得软弱。", text3: "Yếu mềm  - 软弱", audioFile: "501-600.mp3" },
+{ start: 228.417347, end: 231.934172, text: "Dù gặp nhiều khó khăn, cô ấy vẫn giữ được thái độ bình thản.", text2: "尽管遇到了许多困难，她仍然保持着平静的态度。", text3: "Bình thản  - 平静", audioFile: "501-600.mp3" },
+{ start: 232.406372, end: 235.4822, text: "Cần phải phân biệt rõ ràng giữa sự thật và giả dối.", text2: "必须明确区分事实与谎言。", text3: "Phân biệt  - 区分", audioFile: "501-600.mp3" },
+{ start: 235.964422, end: 238.950045, text: "Báo cáo này quá sơ sài và không đủ chi tiết.", text2: "这份报告太粗略，细节不足。", text3: "Sơ sài  - 粗略", audioFile: "501-600.mp3" },
+{ start: 239.392177, end: 242.147279, text: "Anh ấy tỏ ra bất cần đối với mọi việc xung quanh.", text2: "他对周围的一切都表现得漠不关心。", text3: "Bất cần  - 漠不关心", audioFile: "501-600.mp3" },
+{ start: 242.609456, end: 245.394626, text: "Cô ấy lặng lẽ rời khỏi phòng mà không nói lời nào.", text2: "她静静地离开了房间，没有说一句话。", text3: "Lặng lẽ  - 静静", audioFile: "501-600.mp3" },
+{ start: 245.836757, end: 249.333537, text: "Cô ấy bị chỉ trích vì có lối sống phù phiếm và xa hoa.", text2: "她因浮夸奢华的生活方式而受到批评。", text3: "Phù phiếm  - 浮夸", audioFile: "501-600.mp3" },
+{ start: 249.755624, end: 252.991814, text: "Kỹ thuật của anh ấy trong việc chơi đàn piano rất điêu luyện.", text2: "他的钢琴演奏技术非常精湛。", text3: "Điêu luyện  - 精湛", audioFile: "501-600.mp3" },
+{ start: 253.474036, end: 256.880612, text: "Cô ấy có giọng nói dịu dàng khiến người nghe cảm thấy dễ chịu.", text2: "她的声音非常温柔，让人感到舒适。", text3: "Dịu dàng  - 温柔", audioFile: "501-600.mp3" },
+{ start: 257.332766, end: 260.929773, text: "Chiếc váy đỏ khiến cô ấy trở nên nổi bật trong buổi tiệc.", text2: "红色的裙子让她在派对上格外突出。", text3: "Nổi bật  - 突出", audioFile: "501-600.mp3" },
+{ start: 261.381927, end: 264.578027, text: "Trà xanh này có vị đắng chát, không phải ai cũng thích.", text2: "这种绿茶味道苦涩，不是每个人都喜欢。", text3: "Đắng chát  - 苦涩", audioFile: "501-600.mp3" },
+{ start: 265.040204, end: 268.176168, text: "Anh ấy cảm thấy hối hận vì đã có những quyết định dại dột.", text2: "他为自己做出的愚蠢决定感到后悔。", text3: "Dại dột  - 愚蠢", audioFile: "501-600.mp3" },
+{ start: 268.638345, end: 271.573855, text: "Nước suối trong trẻo, có thể nhìn thấy tận đáy.", text2: "小溪的水清澈见底。", text3: "Trong trẻo  - 清澈", audioFile: "501-600.mp3" },
+{ start: 272.036032, end: 275.372449, text: "Giọng nói của anh ấy trở nên khàn khàn sau khi bị cảm lạnh.", text2: "感冒后他的声音变得沙哑。", text3: "Khàn khàn  - 沙哑", audioFile: "501-600.mp3" },
+{ start: 275.824603, end: 278.609773, text: "Công việc văn phòng ngày qua ngày trở nên buồn tẻ.", text2: "日复一日的办公室工作变得枯燥无味。", text3: "Buồn tẻ  - 枯燥", audioFile: "501-600.mp3" },
+{ start: 279.102018, end: 282.518617, text: "Hành động liều lĩnh của anh ấy có thể gây nguy hiểm cho bản thân.", text2: "他的冒险行为可能会危及自身安全。", text3: "Liều lĩnh  - 冒险", audioFile: "501-600.mp3" },
+{ start: 282.970771, end: 286.818345, text: "Sau nhiều trải nghiệm, cô ấy trở nên chín chắn và thận trọng hơn.", text2: "经过许多经历，她变得更加成熟和谨慎。", text3: "Chín chắn  - 成熟", audioFile: "501-600.mp3" },
+{ start: 287.270499, end: 290.606916, text: "Anh ấy thường đưa ra quyết định bồng bột mà không suy nghĩ kỹ.", text2: "他常常在没有仔细考虑的情况下冲动做决定。", text3: "Bồng bột  - 冲动", audioFile: "501-600.mp3" },
+{ start: 291.16932, end: 294.55585, text: "Hoa trong bình đã bắt đầu héo hắt sau một tuần không thay nước.", text2: "花瓶里的花因为一周没有换水而开始枯萎。", text3: "Héo hắt  - 枯萎", audioFile: "501-600.mp3" },
+{ start: 295.008005, end: 298.244195, text: "Cô ấy cảm thấy ngượng ngùng khi được khen ngợi trước đám đông.", text2: "当她在众人面前被夸奖时，感到非常害羞。", text3: "Ngượng ngùng  - 害羞", audioFile: "501-600.mp3" },
+{ start: 298.686327, end: 302.263288, text: "Anh ấy tự nhận mình đã có những hành động ngu si trong quá khứ.", text2: "他承认自己过去的行为很愚蠢。", text3: "Ngu si  - 愚蠢", audioFile: "501-600.mp3" },
+{ start: 302.715442, end: 306.542971, text: "Cô ấy đã kiên trì theo đuổi mục tiêu của mình dù gặp nhiều khó khăn.", text2: "尽管遇到许多困难，她仍然坚持追求自己的目标。", text3: "Kiên trì  - 坚持", audioFile: "501-600.mp3" },
+{ start: 307.025193, end: 309.890544, text: "Anh ấy quyết định không bỏ cuộc dù gặp nhiều thử thách.", text2: "尽管遇到许多挑战，他决定不放弃。", text3: "Bỏ cuộc  - 放弃", audioFile: "501-600.mp3" },
+{ start: 310.362744, end: 313.789365, text: "Cô ấy cảm thấy bức bách khi thời hạn nộp báo cáo đến gần.", text2: "当报告提交期限临近时，她感到非常压抑。", text3: "Bức bách  - 压抑", audioFile: "501-600.mp3" },
+{ start: 314.231497, end: 317.167007, text: "Anh ấy luôn đến cuộc họp đúng giờ và không bao giờ trễ.", text2: "他总是准时参加会议，从不迟到。", text3: "Đúng giờ  - 准时", audioFile: "501-600.mp3" },
+{ start: 317.619161, end: 321.206145, text: "Những nỗ lực của anh ấy trở nên muộn màng khi dự án đã kết thúc.", text2: "当项目结束时，他的努力显得迟到。", text3: "Muộn màng  - 迟到", audioFile: "501-600.mp3" },
+{ start: 321.658299, end: 325.475805, text: "Cô ấy cảm thấy mềm yếu và dễ bị tổn thương sau những khó khăn.", text2: "在经历困难之后，她感到软弱和易受伤害。", text3: "Mềm yếu  - 软弱", audioFile: "501-600.mp3" },
+{ start: 325.927959, end: 329.043878, text: "Tâm trạng của anh ấy dễ bị xao động bởi những thay đổi nhỏ.", text2: "他的情绪容易因为小变化而波动。", text3: "Xao động  - 波动", audioFile: "501-600.mp3" },
+{ start: 329.506054, end: 333.002834, text: "Cách làm việc rập khuôn khiến anh ấy không thể phát huy sáng tạo.", text2: "模式化的工作方式使他无法发挥创造力。", text3: "Rập khuôn  - 模式化", audioFile: "501-600.mp3" },
+{ start: 333.454989, end: 336.801429, text: "Anh ấy bị coi là hèn nhát vì không dám đối mặt với sự thật.", text2: "他因为不敢面对现实而被认为胆怯。", text3: "Hèn nhát  - 胆怯", audioFile: "501-600.mp3" },
+{ start: 337.293673, end: 340.630091, text: "Cô ấy cảm thấy bị cô lập trong một môi trường làm việc xa lạ.", text2: "在一个陌生的工作环境中，她感到被孤立。", text3: "Cô lập  - 孤立", audioFile: "501-600.mp3" },
+{ start: 341.112313, end: 344.007732, text: "Anh ấy luôn tỏ ra kiêu căng và coi thường người khác.", text2: "他总是表现得傲慢，看不起别人。", text3: "Kiêu căng  - 傲慢", audioFile: "501-600.mp3" },
+{ start: 344.429819, end: 348.00678, text: "Anh ấy trải qua cảm giác chua chát khi nhận ra mình bị phản bội.", text2: "当他意识到自己被背叛时，感到非常苦涩。", text3: "Chua chát  - 苦涩", audioFile: "501-600.mp3" },
+{ start: 348.47898, end: 352.286463, text: "Món quà này rất đặc biệt và có ý nghĩa sâu sắc đối với cô ấy.", text2: "这份礼物对她来说非常特别，意义深远。", text3: "Đặc biệt  - 特别", audioFile: "501-600.mp3" },
+{ start: 352.728594, end: 355.774354, text: "Buổi lễ diễn ra trong không khí nghiêm trang và kính trọng.", text2: "仪式在庄重和尊重的氛围中进行。", text3: "Nghiêm trang  - 庄重", audioFile: "501-600.mp3" },
+{ start: 356.236531, end: 359.743333, text: "Cô ấy cảm thấy nhẹ nhõm sau khi hoàn thành xong bài thi.", text2: "完成考试后，她感到非常轻松。", text3: "Nhẹ nhõm  - 轻松", audioFile: "501-600.mp3" },
+{ start: 360.215533, end: 363.872676, text: "Hai người họ đã xảy ra xung đột về quan điểm trong buổi thảo luận.", text2: "在讨论会上，他们两人发生了观点冲突。", text3: "Xung đột  - 冲突", audioFile: "501-600.mp3" },
+{ start: 364.354898, end: 367.400658, text: "Anh ấy hành động một cách ngốc nghếch mà không nghĩ đến hậu quả.", text2: "他不考虑后果，做出了傻瓜般的行为。", text3: "Ngốc nghếch  - 傻瓜", audioFile: "501-600.mp3" },
+{ start: 367.862834, end: 370.868503, text: "Cô ấy cảm thấy lo âu về kết quả của cuộc thi.", text2: "她对比赛结果感到焦虑。", text3: "Lo âu  - 焦虑", audioFile: "501-600.mp3" },
+{ start: 371.310635, end: 374.135896, text: "Con đường trở nên náo động khi đoàn diễu hành đi qua.", text2: "当游行队伍经过时，街道变得非常喧闹。", text3: "Náo động  - 喧闹", audioFile: "501-600.mp3" },
+{ start: 374.598073, end: 377.744059, text: "Anh ấy cảm thấy căng thẳng khi phải thuyết trình trước đám đông.", text2: "在人群面前演讲时，他感到非常紧张。", text3: "Căng thẳng  - 紧张", audioFile: "501-600.mp3" }
+];
+
+    let currentIndex = 0;
+let isFreeMode = true;
+let correctCount = 0;
+let isPlaying = false;
+let correctSentences = new Set();
+let wrongSentences = new Set();
+let autoContinue = false;
+let showAnswer = false;
+
+// Khởi tạo ngay từ đầu, không cần mật khẩu
+init();
+
+function init() {
+    updateSentenceDisplay();
+    answerInput.focus();
+}
+
+function updateSentenceDisplay() {
+    sentenceNumber.value = currentIndex + 1;
+    answerInput.value = '';
+    indicator.style.background = '#ffffff';
+    if (isFreeMode && showAnswer) {
+        indicator.innerHTML = `
+            <div style="font-size: 24px; font-weight: bold; color: #54683e;">${sentences[currentIndex].text}</div>
+            <div style="font-size: 22px; color: #1d1c1c;">${sentences[currentIndex].text2}</div>
+            <div style="font-size: 22px; font-weight: bold; color: #734A2E;"><strong>${sentences[currentIndex].text3}</strong></div>
+        `;
+    } else {
+        indicator.innerHTML = '';
+        indicator.style.color = '';
+        indicator.style.fontSize = '';
+        indicator.style.fontWeight = '';
+        indicator.style.textAlign = '';
+        indicator.style.lineHeight = '';
+    }
+    if (!isFreeMode) updateWrongSentences();
+}
+
+function playCurrentSentence() {
+    if (isPlaying) audio.pause();
+    buttons.forEach(btn => btn.classList.add('disabled'));
+    sentenceNumber.disabled = true;
+    isPlaying = true;
+
+    // Cập nhật nguồn audio dựa trên audioFile của câu hiện tại
+    const currentAudioFile = sentences[currentIndex].audioFile;
+    if (audio.src !== currentAudioFile) {
+        audio.src = currentAudioFile;
+    }
+
+    audio.currentTime = sentences[currentIndex].start;
+    audio.play();
+
+    audio.ontimeupdate = () => {
+        if (audio.currentTime >= sentences[currentIndex].end) {
+            audio.pause();
+            audio.ontimeupdate = null;
+            buttons.forEach(btn => btn.classList.remove('disabled'));
+            sentenceNumber.disabled = false;
+            isPlaying = false;
+        }
+    };
+}
+
+function moveSentence(direction) {
+    currentIndex = (currentIndex + direction + sentences.length) % sentences.length;
+    updateSentenceDisplay();
+    playCurrentSentence();
+}
+
+function removePunctuation(text) {
+    return text.replace(/[,.!?]/g, '');
+}
+
+function checkAnswer() {
+    const userAnswer = removePunctuation(answerInput.value.toLowerCase()).trim();
+    const correctAnswer = removePunctuation(sentences[currentIndex].text.toLowerCase()).trim();
+    
+    if (userAnswer === correctAnswer) {
+        indicator.style.background = '#B7D7AA';
+        correctAudio.play();
+        if (!isFreeMode && !correctSentences.has(currentIndex)) {
+            correctCount++;
+            correctSentences.add(currentIndex);
+            wrongSentences.delete(currentIndex);
+            correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+        } else if (isFreeMode && autoContinue) {
+            correctAudio.onended = () => setTimeout(() => moveSentence(1), 200);
+        } else {
+            correctAudio.onended = null;
+        }
+    } else {
+        indicator.style.background = '#CE6D5E';
+        wrongAudio.play();
+        if (!isFreeMode && !correctSentences.has(currentIndex)) {
+            wrongSentences.add(currentIndex);
+        }
+    }
+    if (!isFreeMode) updateScore();
+}
+
+function updateScore() {
+    scoreDisplay.textContent = `${correctCount}/${sentences.length}`;
+    updateWrongSentences();
+    if (correctCount === sentences.length) {
+        setTimeout(() => {
+            alert("恭喜你完成挑战-你的努力是值得的!");
+        }, 100);
+    }
+}
+
+function updateWrongSentences() {
+    if (isFreeMode || wrongSentences.size === 0) {
+        wrongSentencesDisplay.style.display = 'none';
+    } else {
+        const wrongList = Array.from(wrongSentences).map(index => index + 1).join('/ ');
+        wrongSentencesDisplay.textContent = `解决问题：${wrongList}`;
+        wrongSentencesDisplay.style.display = 'block';
+    }
+}
+
+prevBtn.onclick = () => {
+    moveSentence(-1);
+};
+
+nextBtn.onclick = () => {
+    moveSentence(1);
+};
+
+replayBtn.onclick = () => {
+    playCurrentSentence();
+};
+
+freeModeBtn.onclick = () => {
+    isFreeMode = true;
+    freeModeBtn.classList.add('active-mode');
+    testModeBtn.classList.remove('active-mode');
+    scoreDisplay.style.display = 'none';
+    wrongSentencesDisplay.style.display = 'none';
+    autoContinueBtn.style.display = 'inline';
+    showHideBtn.style.display = 'inline';
+    updateSentenceDisplay();
+};
+
+testModeBtn.onclick = () => {
+    isFreeMode = false;
+    testModeBtn.classList.add('active-mode');
+    freeModeBtn.classList.remove('active-mode');
+    scoreDisplay.style.display = 'inline';
+    autoContinueBtn.style.display = 'none';
+    showHideBtn.style.display = 'none';
+    currentIndex = 0;
+    correctCount = 0;
+    correctSentences.clear();
+    wrongSentences.clear();
+    for (let i = 0; i < sentences.length; i++) {
+        wrongSentences.add(i);
+    }
+    updateSentenceDisplay();
+    playCurrentSentence();
+    updateScore();
+};
+
+autoContinueBtn.onclick = () => {
+    autoContinue = !autoContinue;
+    autoContinueBtn.classList.toggle('active-mode');
+    if (!autoContinue) {
+        correctAudio.onended = null;
+    }
+};
+
+showHideBtn.onclick = () => {
+    showAnswer = !showAnswer;
+    showHideBtn.classList.toggle('active-mode');
+    updateSentenceDisplay();
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && !isPlaying) {
+        if (e.key === 'f') {
+            e.preventDefault();
+            playCurrentSentence();
+        } else if (e.key === '8') {
+            e.preventDefault();
+            moveSentence(-1);
+        } else if (e.key === '9') {
+            e.preventDefault();
+            moveSentence(1);
+        }
+    }
+});
+
+sentenceNumber.onchange = () => {
+    if (!isPlaying) {
+        const num = parseInt(sentenceNumber.value) - 1;
+        if (!isNaN(num) && num >= 0 && num < sentences.length) {
+            currentIndex = num;
+            updateSentenceDisplay();
+            playCurrentSentence();
+        } else {
+            alert(`输入范围： 1 到 ${sentences.length}`);
+            updateSentenceDisplay();
+        }
+    }
+};
+
+sentenceNumber.onkeydown = (e) => {
+    if (!isPlaying) {
+        if (e.key === 'ArrowLeft') moveSentence(-1);
+        if (e.key === 'ArrowRight') moveSentence(1);
+    }
+};
+
+answerInput.onkeypress = (e) => {
+    if (e.key === 'Enter') checkAnswer();
+};
+    </script>
+</body>
+</html>
